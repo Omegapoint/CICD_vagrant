@@ -18,7 +18,6 @@ update-java-alternatives -s java-8-oracle
 
 
 # Basic stuff
-apt-get update
 apt-get install -y apache2 maven jenkins git unzip
 
 
@@ -26,31 +25,41 @@ apt-get install -y apache2 maven jenkins git unzip
 if [ ! -d /vagrant/keys ]; then
   mkdir -p /vagrant/keys
   pushd /vagrant/keys
-  ssh-keygen -t rsa -C "omegapoint" -q -f id_rsa -N ''
+  ssh-keygen -t rsa -C "git@192.168.33.10" -q -f id_rsa -N ''
   popd
 fi
 
 # Set up git server
 sudo adduser --disabled-password --gecos "" git
-cd /home/git
-sudo -u git mkdir .ssh && sudo -u git chmod 700 .ssh
-sudo -u git touch .ssh/authorized_keys && sudo -u git chmod 600 .ssh/authorized_keys
-sudo -u git cat /vagrant/keys/id_rsa.pub >> ~/.ssh/authorized_keys
-sudo -u git mkdir cicd_repo.git
-cd cicd_repo.git
-sudo -u git git init --bare
+pushd /home/git
+sudo -i -u git git config --global user.name "vagrant"
+sudo -i -u git git config --global user.email "vagrant@omegapoint.se"
+sudo -i -u git mkdir .ssh
+sudo -i -u git chmod 700 .ssh
+sudo -i -u git touch .ssh/authorized_keys
+sudo -i -u git chmod 600 .ssh/authorized_keys
+sudo -i -u git cat /vagrant/keys/id_rsa.pub >> .ssh/authorized_keys
 
+# Make an empty git repository
+#sudo -u git mkdir cicd_repo.git
+#cd cicd_repo.git
+#sudo -u git git init --bare
 
-# Install Artifactory
-pushd /opt
-sudo wget -O artifactory-3.5.1.zip http://bit.ly/Hqv9aj
-sudo unzip artifactory-3.5.1.zip
-sudo rm -f artifactory-3.5.1.zip
-sudo ln -s `ls -1d artifactory-*` artifactory
-sudo artifactory-3.5.1/bin/installService.sh
-sudo cp /vagrant/artifactory_server.xml /opt/artifactory/tomcat/conf/server.xml
-sudo service artifactory start
+# Clone the repositories for the frontend and backend application from github.com
+sudo -i -u git git clone --mirror https://github.com/jakobkylberg/cicd-lab-backend.git
+sudo -i -u git git clone --mirror https://github.com/thalen/ci-frontendApp.git
 popd
+
+## Install Artifactory
+#pushd /opt
+#sudo wget -O artifactory-3.5.1.zip http://bit.ly/Hqv9aj
+#sudo unzip artifactory-3.5.1.zip
+#sudo rm -f artifactory-3.5.1.zip
+#sudo ln -s `ls -1d artifactory-*` artifactory
+#sudo artifactory-3.5.1/bin/installService.sh
+#sudo cp /vagrant/artifactory_server.xml /opt/artifactory/tomcat/conf/server.xml
+#sudo service artifactory start
+#popd
 
 
 # Install Nexus
@@ -70,8 +79,6 @@ popd
 
 # Start up Jenkins
 sudo service jenkins start
-
-
 
 # Set environment variables
 sudo cp /vagrant/environment /etc/environment

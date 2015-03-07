@@ -31,10 +31,11 @@ Virtuella maskiner för Omegapoint ABs CI/CD-kompetensdagar.
  password: password
 
 ### Git:
-ssh-add keys/id_rsa
- 
-git clone git@192.168.33.10:cicd_repo.git
+På din host-dator:
+ - ssh-add keys/id_rsa
 
+ - git clone git@192.168.33.10:cicd-lab-backend.git
+ - git clone git@192.168.33.10:ci-frontendApp.git
 
 ## TEST maskin
 ### Allmänt:
