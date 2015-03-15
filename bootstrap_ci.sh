@@ -38,7 +38,7 @@ sudo -i -u git mkdir .ssh
 sudo -i -u git chmod 700 .ssh
 sudo -i -u git touch .ssh/authorized_keys
 sudo -i -u git chmod 600 .ssh/authorized_keys
-sudo -i -u git cat /vagrant/keys/id_rsa.pub >> .ssh/authorized_keys
+sudo -i -u git cat /vagrant/keys/id_rsa.pub > .ssh/authorized_keys
 
 # Make an empty git repository
 #sudo -u git mkdir cicd_repo.git
@@ -76,6 +76,14 @@ sudo update-rc.d nexus defaults
 sudo service nexus start
 popd
 popd
+
+# Copy keys before starting up jenkins
+sudo -i -u jenkins mkdir /var/lib/jenkins/.ssh
+sudo -i -u jenkins cp /vagrant/keys/id_rsa /var/lib/jenkins/.ssh/
+sudo -i -u jenkins cp /vagrant/keys/id_rsa.pub /var/lib/jenkins/.ssh/
+sudo -i -u jenkins cp /vagrant/keys/known_hosts /var/lib/jenkins/.ssh/
+sudo -i -u jenkins chmod 600 /var/lib/jenkins/.ssh/id_rsa
+sudo -i -u jenkins ssh-keyscan -H 192.168.33.10 >> /var/lib/jenkins/.ssh/known_hosts
 
 # Start up Jenkins
 sudo service jenkins start
