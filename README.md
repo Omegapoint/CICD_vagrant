@@ -30,6 +30,12 @@ Virtuella maskiner för Omegapoint ABs CI/CD-kompetensdagar.
  user: admin
  password: password
 
+### Sonar:
+ http://192.168.33.10:8083
+
+ user: admin
+ password: admin
+
 ### Git:
 På din host-dator:
  - ssh-add keys/id_rsa
