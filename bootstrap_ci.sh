@@ -79,7 +79,8 @@ popd
 
 # Copy keys before starting up jenkins
 sudo -i -u jenkins mkdir /var/lib/jenkins/.ssh
-sudo -i -u jenkins cp /vagrant/keys/id_rsa /var/lib/jenkins/.ssh/
+sudo cp /vagrant/keys/id_rsa /var/lib/jenkins/.ssh/
+sudo chown jenkins:jenkins /var/lib/jenkins/.ssh/id_rsa
 sudo -i -u jenkins cp /vagrant/keys/id_rsa.pub /var/lib/jenkins/.ssh/
 sudo -i -u jenkins cp /vagrant/keys/known_hosts /var/lib/jenkins/.ssh/
 sudo -i -u jenkins chmod 600 /var/lib/jenkins/.ssh/id_rsa
