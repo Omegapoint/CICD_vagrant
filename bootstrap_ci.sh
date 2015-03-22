@@ -86,6 +86,38 @@ sudo -i -u jenkins cp /vagrant/keys/known_hosts /var/lib/jenkins/.ssh/
 sudo -i -u jenkins chmod 600 /var/lib/jenkins/.ssh/id_rsa
 sudo -i -u jenkins ssh-keyscan -H 192.168.33.10 >> /var/lib/jenkins/.ssh/known_hosts
 
+# Install sonar qube
+pushd ~
+curl -OL http://dist.sonar.codehaus.org/sonarqube-5.0.1.zip
+sudo unzip sonarqube-5.0.1.zip -d /etc
+sudo ln -s /etc/sonarqube-5.0.1 /etc/sonarqube
+printf "\nsonar.web.port=8083" | sudo tee -a  /etc/sonarqube/conf/sonar.properties
+sudo ln -s /etc/sonarqube/bin/linux-x86-64/sonar.sh /usr/bin/sonar
+sudo cp /vagrant/sonar /etc/init.d/
+sudo chmod 755 /etc/init.d/sonar
+sudo update-rc.d sonar defaults
+sudo service sonar start
+rm sonarqube-5.0.1.zip
+popd
+
+# Install Jenkins plugins
+pushd /var/lib/jenkins/plugins
+sudo curl -LO http://updates.jenkins-ci.org/latest/scm-api.hpi
+sudo chown jenkins:jenkins scm-api.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/git-client.hpi
+sudo chown jenkins:jenkins git-client.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/git.hpi
+sudo chown jenkins:jenkins git.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/nodejs.hpi
+sudo chown jenkins:jenkins nodejs.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/build-pipeline-plugin.hpi
+sudo chown jenkins:jenkins build-pipeline-plugin.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/jquery.hpi
+sudo chown jenkins:jenkins jquery.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/parameterized-trigger.hpi
+sudo chown jenkins:jenkins parameterized-trigger.hpi
+popd
+
 # Start up Jenkins
 sudo service jenkins start
 
