@@ -4,6 +4,9 @@
 apt-get update
 apt-get install -y git unzip
 
+# Install Apache web server
+sudo apt-get install -y apache2
+
 # Install Oracle Java 8
 # (thanks to https://gist.github.com/tinkerware/cf0c47bb69bf42c2d740)
 apt-get -y -q update
