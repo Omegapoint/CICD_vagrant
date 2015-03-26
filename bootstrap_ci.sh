@@ -18,8 +18,7 @@ update-java-alternatives -s java-8-oracle
 
 
 # Basic stuff
-apt-get install -y apache2 maven jenkins git unzip
-
+apt-get install -y apache2 maven jenkins git unzip libfontconfig
 
 # Generate key pair to be used by git if they do not exist already
 if [ ! -d /vagrant/keys ]; then
