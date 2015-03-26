@@ -21,7 +21,13 @@ update-java-alternatives -s java-8-oracle
 apt-get install -y apache2 maven jenkins git unzip
 
 # Needed for phantomjs to work
-sudo apt-get install libfontconfig
+sudo apt-get install -y libfontconfig
+
+#install node stuff
+sudo apt-get install -y nodejs npm
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+sudo npm install grunt-cli -g
+sudo npm install bower -g
 
 # Generate key pair to be used by git if they do not exist already
 if [ ! -d /vagrant/keys ]; then
