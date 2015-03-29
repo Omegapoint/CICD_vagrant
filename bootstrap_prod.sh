@@ -27,7 +27,7 @@ sudo sed -i '/JAVA_HOME/c\JAVA_HOME=/usr/lib/jvm/java-8-oracle' /etc/default/jet
 
 # Starting Jetty8
 sudo update-rc.d jetty8 defaults
-sudo service jetty8 start
+#sudo service jetty8 start
 
 # Set environment variables
 sudo cp /vagrant/environment_run /etc/environment
