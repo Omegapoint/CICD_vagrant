@@ -18,7 +18,7 @@
 
 Det finns tre virtuella maskiner i labben. Den första, ci/cd-maskinen, innehåller Jenkins, Sonar och de två git-repona med labbens testapplikationer. Vidare finns två maskiner, test och prod, som simulerar en test- respektive produktionsmiljö.
 
-Man kan nå maskinerna m.h.a. vagrant ssh <maskinens vagrantnamn>
+Man kan nå maskinerna m.h.a. ```vagrant ssh <maskinens vagrantnamn>```
 ###CI/CD-maskin
 
 ####Allmänt:
