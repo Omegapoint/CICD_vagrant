@@ -46,17 +46,22 @@ password: admin
 ####Git:
 På din host-dator:
 
-```ssh-add keys/id_rsa
-git clone git@192.168.33.10:cicd-lab-backend.git
-git clone git@192.168.33.10:ci-frontendApp.git```
+```$ ssh-add keys/id_rsa```
+
+```$ git clone git@192.168.33.10:cicd-lab-backend.git```
+
+```$ git clone git@192.168.33.10:ci-frontendApp.git```
 
 Om du kör windows:
 Öppna git bash och kör följande
 
-```eval $(ssh-agent)
-ssh-add keys/id_rsa
-git clone git@192.168.33.10:cicd-lab-backend.git
-git clone git@192.168.33.10:ci-frontendApp.git```
+```$ eval $(ssh-agent)```
+
+```$ ssh-add keys/id_rsa```
+
+```$ git clone git@192.168.33.10:cicd-lab-backend.git```
+
+```$ git clone git@192.168.33.10:ci-frontendApp.git```
 
 ###TEST-maskin
 
@@ -109,20 +114,21 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
  - Installera först node, sedan:
  
-```$ npm install -g grunt-cli
-$ npm install -g bower```
+```$ npm install -g grunt-cli```
+
+```$ npm install -g bower```
 
  - Köra applikationen: 
  
-```grunt serve```
+```$ grunt serve```
 
  - Köra tester: 
  
-```grunt test```
+```$ grunt test```
 
  - Bygga applikationen:
   
-```grunt build --url=hostname```
+```$ grunt build --url=hostname```
 
 ##Målbild
 
