@@ -5,13 +5,14 @@
 1. Installera git och ssh
  - Windows: https://msysgit.github.io/ Välj förvalda alternativ
  - Mac OS: Använd ‘port’ (https://www.macports.org/), ‘fink’ (http://www.finkproject.org/) eller någon annan väg
-2. Gå till https://www.vagrantup.com/ och ladda ner respektive installationspaket för din dator.
-3. Installera paketet och starta om datorn
-4. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
+2. Ladda ner och installera VirtualBox (https://www.virtualbox.org)
+3. Gå till https://www.vagrantup.com/ och ladda ner respektive installationspaket för din dator.
+4. Installera paketet och starta om datorn
+5. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
 
-```$ git clone https://github.com/allotria/CICD_vagrant.git```
+```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
 
-5. Kör vagrant up i den klonade projektkatalogen
+5. Kör ```vagrant up``` i den klonade projektkatalogen. Om vagrant klagar på att den inte har någon provider, ladda ner VirtualBox från http://virtualbox.org
 6. Vänta (kan ta upp emot 45 min)
 
 ##Förutsättningar
@@ -128,7 +129,15 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
  - Bygga applikationen:
   
-```$ grunt build --url=hostname```
+```$ grunt build```
+
+ - Skapa /var/www/html/mc-angular/config/settings.json i testmiljön med följande innehåll: 
+
+```{ “REST_ENDPOINT”: “http://192.168.33.20:8080” }```
+
+ - Skapa /var/www/html/mc-angular/config/settings.json i prodmiljön med följande innehåll:
+
+```{ “REST_ENDPOINT”: “http://192.168.33.30:8080” }```
 
 ##Målbild
 
