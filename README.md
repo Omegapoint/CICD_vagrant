@@ -1,4 +1,4 @@
-#Kompetensdag CI/CD dag 1
+﻿#Kompetensdag CI/CD dag 1
 
 ##Förberedelser
 
@@ -12,7 +12,8 @@
 
 ```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
 
-5. Kör ```vagrant up``` i den klonade projektkatalogen. Om vagrant klagar på att den inte har någon provider, ladda ner VirtualBox från http://virtualbox.org
+5. Kör ```vagrant up``` i den klonade projektkatalogen. 
+ - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
 6. Vänta (kan ta upp emot 45 min)
 
 ##Förutsättningar
@@ -89,6 +90,7 @@ Om du kör windows:
 ###Backendapplikationen
 
 Backendapplikationen är skriven i Java, använder sig utav Spring boot och har ett par enhetstester.
+
 Gitrepo: git@192.168.33.10:cicd-lab-backend.git
 
  - Bygg:
@@ -119,11 +121,14 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
 ```$ npm install -g bower```
 
+```$ bower install```
+
  - Köra applikationen: 
  
 ```$ grunt serve```
 
  - Köra tester: 
+   Här behöver phantomjs och karma-phantomjs-launcher vara installerade.
  
 ```$ grunt test```
 
