@@ -121,6 +121,8 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
 ```$ npm install -g bower```
 
+```$ npm install```
+
 ```$ bower install```
 
  - Köra applikationen: 
