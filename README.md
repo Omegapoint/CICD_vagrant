@@ -133,11 +133,11 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
  - Skapa /var/www/html/mc-angular/config/settings.json i testmiljön med följande innehåll: 
 
-```{ “REST_ENDPOINT”: “http://192.168.33.20:8080” }```
+```{ "REST_ENDPOINT": "http://192.168.33.20:8080" }```
 
  - Skapa /var/www/html/mc-angular/config/settings.json i prodmiljön med följande innehåll:
 
-```{ “REST_ENDPOINT”: “http://192.168.33.30:8080” }```
+```{ "REST_ENDPOINT": "http://192.168.33.30:8080" }```
 
 ##Målbild
 
