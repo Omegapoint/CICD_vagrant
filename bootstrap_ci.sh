@@ -94,6 +94,11 @@ sudo -i -u jenkins cp /vagrant/keys/known_hosts /var/lib/jenkins/.ssh/
 sudo -i -u jenkins chmod 600 /var/lib/jenkins/.ssh/id_rsa
 sudo -i -u jenkins ssh-keyscan -H 192.168.33.10 >> /var/lib/jenkins/.ssh/known_hosts
 
+# Copy settings.xml to .m2 dir
+sudo -i -u jenkins mkdir /var/lib/jenkins/.m2
+sudo cp /vagrant/settings.xml /var/lib/jenkins/.m2/
+sudo chown jenkins:jenkins /var/lib/jenkins/.m2/settings.xml
+
 # Install sonar qube
 pushd ~
 curl -OL http://dist.sonar.codehaus.org/sonarqube-5.0.1.zip
@@ -125,6 +130,7 @@ sudo chown jenkins:jenkins jquery.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/parameterized-trigger.hpi
 sudo chown jenkins:jenkins parameterized-trigger.hpi
 popd
+
 
 # Start up Jenkins
 sudo service jenkins start
