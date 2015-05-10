@@ -127,6 +127,8 @@ sudo curl -LO http://updates.jenkins-ci.org/latest/build-pipeline-plugin.hpi
 sudo chown jenkins:jenkins build-pipeline-plugin.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/jquery.hpi
 sudo chown jenkins:jenkins jquery.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/promoted-builds.hpi
+sudo chown jenkins:jenkins promoted-builds.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/parameterized-trigger.hpi
 sudo chown jenkins:jenkins parameterized-trigger.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/copyartifact.hpi
