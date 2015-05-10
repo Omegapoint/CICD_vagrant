@@ -129,8 +129,9 @@ sudo curl -LO http://updates.jenkins-ci.org/latest/jquery.hpi
 sudo chown jenkins:jenkins jquery.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/parameterized-trigger.hpi
 sudo chown jenkins:jenkins parameterized-trigger.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/copyartifact.hpi
+sudo chown jenkins:jenkins copyartifact.hpi
 popd
-
 
 # Start up Jenkins
 sudo service jenkins start
