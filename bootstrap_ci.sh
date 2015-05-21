@@ -133,6 +133,8 @@ sudo curl -LO http://updates.jenkins-ci.org/latest/parameterized-trigger.hpi
 sudo chown jenkins:jenkins parameterized-trigger.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/copyartifact.hpi
 sudo chown jenkins:jenkins copyartifact.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/job-dsl.hpi
+sudo chown jenkins:jenkins job-dsl.hpi
 popd
 
 # Start up Jenkins
