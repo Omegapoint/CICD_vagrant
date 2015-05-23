@@ -100,6 +100,10 @@ sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/BackendApp_CommitStage
 sudo -i -u jenkins cp /vagrant/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage
 sudo -i -u jenkins mv /var/lib/jenkins/jobs/BackendApp_CommitStage/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
 
+sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/FrontendApp_CommitStage
+sudo -i -u jenkins cp /vagrant/FrontendApp_CommitStage.xml /var/lib/jenkins/jobs/FrontendApp_CommitStage
+sudo -i -u jenkins mv /var/lib/jenkins/jobs/FrontendApp_CommitStage/FrontendApp_CommitStage.xml /var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml
+
 # Copy settings.xml to .m2 dir
 sudo -i -u jenkins mkdir /var/lib/jenkins/.m2
 sudo cp /vagrant/settings.xml /var/lib/jenkins/.m2/
