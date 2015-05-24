@@ -32,5 +32,10 @@ Hur man gör det finns beskrivet här:
 https://support.sonatype.com/entries/21283268-Configure-Maven-to-Deploy-to-Nexus
 
 För frontendappen så använder vi inte maven, men nexus har ett rest API som vi kan använda, implementera deploy-steget genom att använda curl:
-```curl -v -F "r=releases" -F "g=application" -F "a=applicationName" -F "v=1.0.${BUILD_NUMBER}" -F "p=tar.gz" -F 
+```curl -v -F "r=releases" -F "g=application" -F "a=applicationName" -F "v="x.y.z" -F "p=tar.gz" -F 
 "file=@./kod/dist/file" -u admin:admin123 http://192.168.33.10:8081/nexus/service/local/artifact/maven/content```
+
+För både frontend och backend applikationen gäller det att hantera versioner så att vi får en unik version för varje deploy till nexus,
+ett enkelt sätt att lösa det är att använda en parameter från jenkins, BUILD_NUMBER. Då kan vi sätta versionen till:
+``` 1.0.${BUILD_NUMBER} ```
+Detta fungerar både i shell script och när man anger parametrar till ett maven bygge.
