@@ -33,4 +33,4 @@ https://support.sonatype.com/entries/21283268-Configure-Maven-to-Deploy-to-Nexus
 
 För frontendappen så använder vi inte maven, men nexus har ett rest API som vi kan använda, implementera deploy-steget genom att använda curl:
 ```curl -v -F "r=releases" -F "g=application" -F "a=applicationName" -F "v=1.0.${BUILD_NUMBER}" -F "p=tar.gz" -F 
-"file=@./kod/dist/file" -u admin:admin123 http://nexus.ws.ams.se:8081/nexus/service/local/artifact/maven/content```
+"file=@./kod/dist/file" -u admin:admin123 http://192.168.33.10:8081/nexus/service/local/artifact/maven/content```
