@@ -94,12 +94,6 @@ sudo -i -u jenkins cp /vagrant/keys/known_hosts /var/lib/jenkins/.ssh/
 sudo -i -u jenkins chmod 600 /var/lib/jenkins/.ssh/id_rsa
 sudo -i -u jenkins ssh-keyscan -H 192.168.33.10 >> /var/lib/jenkins/.ssh/known_hosts
 
-#set up deafult jobs
-sudo -i -u jenkins mkdir /var/lib/jenkins/jobs
-sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/BackendApp_CommitStage
-sudo -i -u jenkins cp /vagrant/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage
-sudo -i -u jenkins mv /var/lib/jenkins/jobs/BackendApp_CommitStage/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
-
 sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/FrontendApp_CommitStage
 sudo -i -u jenkins cp /vagrant/FrontendApp_CommitStage.xml /var/lib/jenkins/jobs/FrontendApp_CommitStage
 sudo -i -u jenkins mv /var/lib/jenkins/jobs/FrontendApp_CommitStage/FrontendApp_CommitStage.xml /var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml
@@ -143,10 +137,24 @@ sudo curl -LO http://updates.jenkins-ci.org/latest/parameterized-trigger.hpi
 sudo chown jenkins:jenkins parameterized-trigger.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/copyartifact.hpi
 sudo chown jenkins:jenkins copyartifact.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/job-dsl.hpi
+sudo chown jenkins:jenkins job-dsl.hpi
 popd
 
 # Start up Jenkins
 sudo service jenkins start
+
+#set up default jobs
+sudo -i -u jenkins mkdir /var/lib/jenkins/jobs
+sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/BackendApp_CommitStage
+sudo -i -u jenkins cp /vagrant/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage
+sudo -i -u jenkins mv /var/lib/jenkins/jobs/BackendApp_CommitStage/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
+
+sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/FrontendApp_CommitStage
+sudo -i -u jenkins cp /vagrant/FrontendApp_CommitStage.xml /var/lib/jenkins/jobs/FrontendApp_CommitStage
+sudo -i -u jenkins mv /var/lib/jenkins/jobs/FrontendApp_CommitStage/FrontendApp_CommitStage.xml /var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml
+
+sudo service jenkins restart
 
 # Set environment variables
 sudo cp /vagrant/environment /etc/environment
