@@ -141,7 +141,6 @@ popd
 sudo service jenkins start
 
 #set up default jobs
-sudo -i -u jenkins mkdir /var/lib/jenkins/jobs
 sudo -i -u jenkins mkdir /var/lib/jenkins/jobs/BackendApp_CommitStage
 sudo -i -u jenkins cp /vagrant/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage
 sudo -i -u jenkins mv /var/lib/jenkins/jobs/BackendApp_CommitStage/BackendApp_CommitStage.xml /var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
