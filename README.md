@@ -39,3 +39,21 @@ För både frontend och backend applikationen gäller det att hantera versioner 
 ett enkelt sätt att lösa det är att använda en parameter från jenkins, BUILD_NUMBER. Då kan vi sätta versionen till:
 ``` 1.0.${BUILD_NUMBER} ```
 Detta fungerar både i shell script och när man anger parametrar till ett maven bygge.
+
+##Uppgift 2
+Nu ska vi vidareutveckla vår byggpipeline så att vi för varje stabilt bygge skapar och arkiverar artefakter i jenkins men vi skickar inte upp något till nexus.
+Istället ska uppladdning till nexus ske via en promotion, för detta behöver vi använda två plugins: Parameterized trigger plugin och promoted builds plugin.
+Alla plugins nödvändiga för labben är installerade som default.
+För att kunna använda promotions behöver vi göra följande:
+
+1. Första steget är att i deployjobbet lägga till ett promotion steg (Promote builds when...)
+2. Vi behöver ha ett antal parametrar (predefined parameters): BuildVal, Promoted_Build_Number, JobName. BuildVal är lite speciellt, den ska sättas till:
+<SpecificBuildSelector><buildNumber>$PROMOTED_NUMBER</buildNumber></SpecificBuildSelector>
+3. Checka i only when manually approved och block until the triggered projects finish their builds
+
+Vi måste också ange ett projekt att bygga när promotion görs, nästa steg är att sätta upp det jobbet. Detta jobb ska kopiera artefakter från det jobb som gör anropet, dvs vårt promotion jobb.
+Vi måste därför använda copy artifact plugin, ange att jobbet är parameteriserat och sätt upp tre parametrar som matchar de parametrar som vi satte upp i förra jobbet. 
+BuildVal ska vara av typen "build selector for copy artifact", de andra två strängar.
+
+För att sätta versionen när vi laddar upp till nexus kan vi använda promoted_build_number som vi får in som parameter:
+```1.0.${PROMOTED_BUILD_NUMBER}```
