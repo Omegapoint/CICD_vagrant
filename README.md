@@ -37,6 +37,7 @@ För frontendappen så använder vi inte maven, men nexus har ett rest API som v
 
 För både frontend och backend applikationen gäller det att hantera versioner så att vi får en unik version för varje deploy till nexus,
 ett enkelt sätt att lösa det är att använda en parameter från jenkins, BUILD_NUMBER. Då kan vi sätta versionen till:
+
 ``` 1.0.${BUILD_NUMBER} ```
 Detta fungerar både i shell script och när man anger parametrar till ett maven bygge.
 
@@ -51,6 +52,7 @@ För att kunna använda promotions behöver vi göra följande:
 BuildVal är lite speciellt, den ska sättas till:
 
 ``` <SpecificBuildSelector><buildNumber>$PROMOTED_NUMBER</buildNumber></SpecificBuildSelector> ```
+
 3. Checka i only when manually approved och block until the triggered projects finish their builds
 
 Vi måste också ange ett projekt att bygga när promotion görs, nästa steg är att sätta upp det jobbet. Detta jobb ska kopiera artefakter från det jobb som gör anropet, dvs vårt promotion jobb.
