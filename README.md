@@ -47,7 +47,9 @@ Alla plugins nödvändiga för labben är installerade som default.
 För att kunna använda promotions behöver vi göra följande:
 
 1. Första steget är att i deployjobbet lägga till ett promotion steg (Promote builds when...)
-2. Vi behöver ha ett antal parametrar (predefined parameters): BuildVal, Promoted_Build_Number, JobName. BuildVal är lite speciellt, den ska sättas till:
+2. Vi behöver ha ett antal parametrar (predefined parameters): BuildVal, Promoted_Build_Number, JobName. 
+BuildVal är lite speciellt, den ska sättas till:
+
 ``` <SpecificBuildSelector><buildNumber>$PROMOTED_NUMBER</buildNumber></SpecificBuildSelector> ```
 3. Checka i only when manually approved och block until the triggered projects finish their builds
 
