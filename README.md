@@ -48,7 +48,7 @@ För att kunna använda promotions behöver vi göra följande:
 
 1. Första steget är att i deployjobbet lägga till ett promotion steg (Promote builds when...)
 2. Vi behöver ha ett antal parametrar (predefined parameters): BuildVal, Promoted_Build_Number, JobName. BuildVal är lite speciellt, den ska sättas till:
-<SpecificBuildSelector><buildNumber>$PROMOTED_NUMBER</buildNumber></SpecificBuildSelector>
+``` <SpecificBuildSelector><buildNumber>$PROMOTED_NUMBER</buildNumber></SpecificBuildSelector> ```
 3. Checka i only when manually approved och block until the triggered projects finish their builds
 
 Vi måste också ange ett projekt att bygga när promotion görs, nästa steg är att sätta upp det jobbet. Detta jobb ska kopiera artefakter från det jobb som gör anropet, dvs vårt promotion jobb.
@@ -56,4 +56,4 @@ Vi måste därför använda copy artifact plugin, ange att jobbet är parameteri
 BuildVal ska vara av typen "build selector for copy artifact", de andra två strängar.
 
 För att sätta versionen när vi laddar upp till nexus kan vi använda promoted_build_number som vi får in som parameter:
-```1.0.${PROMOTED_BUILD_NUMBER}```
+``` 1.0.${PROMOTED_BUILD_NUMBER} ```
