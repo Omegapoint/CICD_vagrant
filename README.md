@@ -17,6 +17,21 @@
  - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
 6. Vänta (kan ta upp emot 45 min)
 
+### Konfigurera Puppet
+
+I labben är det tänkt att man använder sig utav Puppet för att genomföra deployer till test- och prodmaskinen. Puppet är uppsatt så att det finns en Puppet-master på ci-maskinen och och en slav på vardera test- och prod-maskinen. Slavarna pollar mastern efter ändringar och om så är fallet utför slavarna ändringarna på respektive maskin. För att det skall fungera måste certifikat signeras på följande sätt:
+
+1. Anslut till ci-maskinen med ````vagrant ssh ci``` och kör ```sudo puppet master --verbose --no-daemonize``` för att skapa nya CA certifikat.
+2. När certifikat och SSL-nycklar har skapats startas puppet och ```Notice: Starting Puppet master version 3.6.2``` syns i terminalfönstret. Avbryt då med Ctrl-C
+3. Kör ```sudo service apache2 start``` istället för att starta Puppet
+4. Logga ut från ci-maskinen och anslut till test-maskinen med ```vagrant ssh test```
+5. Starta Puppet-slaven med ```sudo service puppet start```
+6. Upprepa 4 och 5 för prod-maskinen
+7. Anslut till ci-maskinen och signera slavarnas certifikat med ```sudo puppet cert sign --all```
+
+På ci-maskinen kan aktuella certifikat listas med ```sudo puppet cert list```
+På test- och prod-maskinen kan slavarnas kontakt med mastern testas med ```sudo puppet agent --test```
+
 ##Förutsättningar
 
 För denna labb finns två jenkinsjobb förberedda som du kan utgå ifrån, FrontendApp_CommitStage samt BackendApp_CommitStage
