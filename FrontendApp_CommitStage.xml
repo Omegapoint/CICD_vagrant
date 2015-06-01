@@ -28,7 +28,12 @@
 	<builders>
 		<hudson.tasks.Shell>
 			<command>
-				npm install bower install grunt test grunt build cd dist tar -zcvf frontendApp-1.0.${BUILD_NUMBER}.tar.gz mc-angular/
+				npm install 
+				bower install 
+				grunt test 
+				grunt build 
+				cd dist 
+				tar -zcvf frontendApp-1.0.${BUILD_NUMBER}.tar.gz mc-angular/
 			</command>
 		</hudson.tasks.Shell>
 	</builders>
