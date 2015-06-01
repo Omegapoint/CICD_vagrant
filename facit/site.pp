@@ -26,15 +26,11 @@ define backend_app($version) {
     }
 }
 
-node 'test' {
+node 'default' {
+			      
+    $backend_version = hiera("cicd-lab-backend_version")
+
     backend_app { 'backend_app':
-    version => '1.0.8'
+    version => $backend_version
     }
 }
-
-node 'prod' {
-    backend_app { 'backend_app':
-    version => '1.0.7'
-    }
-}
-
