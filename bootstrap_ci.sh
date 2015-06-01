@@ -168,6 +168,14 @@ sudo apt-get update
 sudo apt-get -y -q install puppetmaster-passenger
 sudo service apache2 stop
 sudo touch /etc/puppet/manifests/site.pp
+
+#hiera
+sudo cp /vagrant/puppet/hiera/hiera.yaml /etc/
+sudo mkdir /etc/puppet/hieradata
+sudo cp /vagrant/puppet/hiera/test.yaml /etc/puppet/hieradata
+sudo cp /vagrant/puppet/hiera/prod.yaml /etc/puppet/hieradata
+sudo cp /vagrant/puppet/hiera/common.yaml /etc/puppet/hieradata
+
 sudo cp /vagrant/puppet/master/puppet.conf /etc/puppet/puppet.conf
 sudo rm -rf /var/lib/puppet/ssl
 sudo cp /vagrant/puppet/master/puppetmaster.conf /etc/apache2/sites-enabled/puppetmaster.conf
