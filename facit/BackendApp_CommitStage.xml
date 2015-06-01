@@ -54,7 +54,15 @@
   </settings>
   <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
   <reporters/>
-  <publishers/>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>target/*.jar</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
   <buildWrappers/>
   <prebuilders/>
   <postbuilders/>

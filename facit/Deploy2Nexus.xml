@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<maven2-moduleset plugin="maven-plugin@2.7.1">
+<project>
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -31,29 +31,7 @@
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
-  <rootModule>
-    <groupId>se.omegapoint</groupId>
-    <artifactId>cicd-lab-backend</artifactId>
-  </rootModule>
-  <goals>deploy -Dversion=1.0.${PROMOTED_BUILD_NUMBER}  -Dmaven.test.skip=true</goals>
-  <aggregatorStyleBuild>true</aggregatorStyleBuild>
-  <incrementalBuild>false</incrementalBuild>
-  <ignoreUpstremChanges>false</ignoreUpstremChanges>
-  <archivingDisabled>false</archivingDisabled>
-  <siteArchivingDisabled>false</siteArchivingDisabled>
-  <fingerprintingDisabled>false</fingerprintingDisabled>
-  <resolveDependencies>false</resolveDependencies>
-  <processPlugins>false</processPlugins>
-  <mavenValidationLevel>-1</mavenValidationLevel>
-  <runHeadless>false</runHeadless>
-  <disableTriggerDownstreamProjects>false</disableTriggerDownstreamProjects>
-  <blockTriggerWhenBuilding>true</blockTriggerWhenBuilding>
-  <settings class="jenkins.mvn.DefaultSettingsProvider"/>
-  <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
-  <reporters/>
-  <publishers/>
-  <buildWrappers/>
-  <prebuilders>
+  <builders>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.35.1">
       <project>${Jobb}</project>
       <filter></filter>
@@ -64,12 +42,18 @@
       </selector>
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
-  </prebuilders>
-  <postbuilders/>
-  <runPostStepsIfResult>
-    <name>SUCCESS</name>
-    <ordinal>0</ordinal>
-    <color>BLUE</color>
-    <completeBuild>true</completeBuild>
-  </runPostStepsIfResult>
-</maven2-moduleset>
+    <hudson.tasks.Shell>
+      <command>mvn deploy:deploy-file \
+-DgroupId=se.omegapoint \
+-DartifactId=cicd-lab-backend \
+-Dversion=1.0.${PROMOTED_BUILD_NUMBER} \
+-Dpackaging=jar \
+-Dfile=target/cicd-lab-backend-1.0.${PROMOTED_BUILD_NUMBER}.jar \
+-DrepositoryId=deployment \
+-Durl=http://192.168.33.10:8081/nexus/content/repositories/releases \
+--settings=/var/lib/jenkins/.m2/settings.xml</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
