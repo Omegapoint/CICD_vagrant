@@ -181,5 +181,5 @@ sudo rm -rf /var/lib/puppet/ssl
 sudo cp /vagrant/puppet/master/puppetmaster.conf /etc/apache2/sites-enabled/puppetmaster.conf
 # Install the puppet-nexus plugin
 sudo mkdir /usr/share/puppet/modules
-cd /usr/share/puppet/modules
+cd /etc/puppet/modules
 sudo git clone https://github.com/cescoffier/puppet-nexus.git nexus

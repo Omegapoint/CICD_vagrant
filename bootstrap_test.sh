@@ -48,5 +48,5 @@ sudo cp /vagrant/puppet/slave/puppet /etc/default/puppet
 sudo cp /vagrant/puppet/slave/puppet.conf /etc/puppet/puppet.conf
 # Install the puppet-nexus plugin
 sudo mkdir /usr/share/puppet/modules
-cd /usr/share/puppet/modules
+cd /etc/puppet/modules
 sudo git clone https://github.com/cescoffier/puppet-nexus.git nexus
