@@ -31,3 +31,22 @@ sudo service jetty8 stop
 
 # Set environment variables
 sudo cp /vagrant/environment_run /etc/environment
+
+# Add init.d script for the cicd-lab-backend
+sudo cp /vagrant/cicd-lab-backend.sh /etc/init.d/
+sudo chmod 700 /etc/init.d/cicd-lab-backend.sh
+
+# Setup puppet addresses
+sudo cat /vagrant/hosts >> /etc/hosts
+
+# Setup puppet
+cd ~; wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+sudo dpkg -i puppetlabs-release-trusty.deb
+sudo apt-get update
+sudo apt-get -y -q install puppet
+sudo cp /vagrant/puppet/slave/puppet /etc/default/puppet
+sudo cp /vagrant/puppet/slave/puppet.conf /etc/puppet/puppet.conf
+# Install the puppet-nexus plugin
+sudo mkdir /usr/share/puppet/modules
+cd /etc/puppet/modules
+sudo git clone https://github.com/cescoffier/puppet-nexus.git nexus

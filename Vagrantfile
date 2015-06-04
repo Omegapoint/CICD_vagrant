@@ -13,6 +13,8 @@ Vagrant.configure(2) do |config|
 	  # using a specific IP.
 	  ci.vm.network "private_network", ip: "192.168.33.10"
 
+	  ci.vm.hostname = "ci"
+
 	  # Provider-specific configuration so you can fine-tune various
 	  # backing providers for Vagrant. These expose provider-specific options.
 	  # Example for VirtualBox:
@@ -45,6 +47,8 @@ Vagrant.configure(2) do |config|
 	  # using a specific IP.
 	  test.vm.network "private_network", ip: "192.168.33.20"
 
+	  test.vm.hostname = "test"
+
 	  # Provider-specific configuration so you can fine-tune various
 	  # backing providers for Vagrant. These expose provider-specific options.
 	  # Example for VirtualBox:
@@ -73,6 +77,8 @@ Vagrant.configure(2) do |config|
       # Create a private network, which allows host-only access to the machine
 	  # using a specific IP.
 	  prod.vm.network "private_network", ip: "192.168.33.30"
+
+	  prod.vm.hostname = "prod"
 
 	  # Provider-specific configuration so you can fine-tune various
 	  # backing providers for Vagrant. These expose provider-specific options.

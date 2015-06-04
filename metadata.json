@@ -1,0 +1,12 @@
+{
+  "author": "Olle Thalen, akquinet tech@spree gmbh",
+  "license": "Apache Software License 2.0",
+  "name": "backendApp",
+  "summary": "Download Maven Artifacts from Nexus",
+  "version": "0.0.1",
+  "source": "https://github.com/cescoffier/puppet-nexus.git",
+  "tags": ["nexus", "gav", "artifact"],
+  "operatingsystem_support": [],
+  "requirements": [],
+  "dependencies": []
+}
