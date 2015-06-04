@@ -43,26 +43,9 @@
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.tasks.Shell>
-      <command>mvn deploy:deploy-file \
--DgroupId=se.omegapoint \
--DartifactId=cicd-lab-backend \
--Dversion=1.0.${PROMOTED_BUILD_NUMBER} \
--Dpackaging=jar \
--Dfile=target/cicd-lab-backend-1.0.${PROMOTED_BUILD_NUMBER}.jar \
--DrepositoryId=deployment \
--Durl=http://192.168.33.10:8081/nexus/content/repositories/releases \
---settings=/var/lib/jenkins/.m2/settings.xml</command>
+      <command>curl -v -F &quot;r=releases&quot; -F &quot;g=se.omegapoint&quot; -F &quot;a=cicd-lab-frontend&quot; -F v=&quot;1.0.${PROMOTED_BUILD_NUMBER}&quot; -F &quot;p=tar.gz&quot; -F &quot;file=@./dist/frontendApp-1.0.${PROMOTED_BUILD_NUMBER}.tar.gz&quot; -u admin:admin123 http://192.168.33.10:8081/nexus/service/local/artifact/maven/content</command>
     </hudson.tasks.Shell>
   </builders>
-  <publishers>
-    <au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger plugin="build-pipeline-plugin@1.4.7">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters plugin="parameterized-trigger@2.26">
-          <properties>artifact_version=${PROMOTED_BUILD_NUMBER}</properties>
-        </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-      </configs>
-      <downstreamProjectNames>Set_released_version</downstreamProjectNames>
-    </au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
-  </publishers>
+  <publishers/>
   <buildWrappers/>
 </project>
