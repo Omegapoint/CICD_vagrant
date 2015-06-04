@@ -31,7 +31,10 @@ Vagrant.configure(2) do |config|
 	  #   sudo apt-get update
 	  #   sudo apt-get install -y apache2
 	  # SHELL  
-	  ci.vm.provision :shell, path: "bootstrap_ci.sh"
+#	  ci.vm.provision :shell, path: "bootstrap_ci.sh"
+          ci.vm.provision "ansible" do |ansible|
+             ansible.playbook = "playbooks/ci.yml"
+          end
   end
 
 
