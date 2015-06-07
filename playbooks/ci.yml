@@ -90,7 +90,7 @@
           apt_repository: repo='deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/' state=present update_cache=yes
           
         - name: install sonar
-          apt: pkg=sonar state=present update_cache=yes force=yes
+          apt: pkg=sonar state=present force=yes
 
         - name: conf sonar port
           lineinfile: >
@@ -101,3 +101,37 @@
         - name: set environment variables
           copy: src=../environment dest=/etc/environment
                        
+# TODO Add jobs to jenkins
+
+# setup puppet
+        - name: get puppet distribution
+          get_url: url=https://apt.puppetlabs.com/puppetlabs-release-trusty.deb dest=/tmp/puppetlabs-release-trusty.deb
+
+        - name: install puppet
+          apt: deb=/tmp/puppetlabs-release-trusty.deb state=present
+
+        - name: install puppetmaster-passenger
+          apt: pkg=puppetmaster-passenger
+
+# hiera
+
+        - name: copy puppet conf into place
+          copy: src=../puppet/hiera/hiera.yaml dest=/etc/puppet/
+
+        - name: copy hiera data into place
+          copy: src=../puppet/hiera/{{item}} dest=/etc/puppet/hieradata/
+          with_items:
+          - test.yaml
+          - prod.yaml
+          - common.yaml
+
+        - name: copy puppet master conf
+          copy: src=../puppet/master/puppet.conf dest=/etc/puppet/puppet.conf
+
+        - name: enable puppetmaster site
+          copy: src=../puppet/master/puppetmaster.conf dest=/etc/apache2/sites-enabled/puppetmaster.conf
+
+# TODO puppet nexus plugin
+        - name: install puppet nexus module
+          sudo: yes
+          git: repo=https://github.com/cescoffier/puppet-nexus.git dest=/usr/share/puppet/modules/nexus     
