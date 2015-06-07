@@ -54,6 +54,15 @@
 --settings=/var/lib/jenkins/.m2/settings.xml</command>
     </hudson.tasks.Shell>
   </builders>
-  <publishers/>
+  <publishers>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger plugin="build-pipeline-plugin@1.4.7">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters plugin="parameterized-trigger@2.26">
+          <properties>artifact_version=${PROMOTED_BUILD_NUMBER}</properties>
+        </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+      </configs>
+      <downstreamProjectNames>Set_released_version</downstreamProjectNames>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
+  </publishers>
   <buildWrappers/>
 </project>

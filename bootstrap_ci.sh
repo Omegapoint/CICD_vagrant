@@ -139,6 +139,8 @@ sudo curl -LO http://updates.jenkins-ci.org/latest/copyartifact.hpi
 sudo chown jenkins:jenkins copyartifact.hpi
 sudo curl -LO http://updates.jenkins-ci.org/latest/job-dsl.hpi
 sudo chown jenkins:jenkins job-dsl.hpi
+sudo curl -LO http://updates.jenkins-ci.org/latest/delivery-pipeline-plugin.hpi
+sudo chown jenkins:jenkins delivery-pipeline-plugin.hpi
 popd
 
 # Start up Jenkins
