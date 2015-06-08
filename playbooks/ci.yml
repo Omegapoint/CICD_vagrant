@@ -103,7 +103,16 @@
         - name: set environment variables
           copy: src=../environment dest=/etc/environment
                        
-# TODO Add jobs to jenkins
+# Add jobs to jenkins
+        - name: ensure BackendApp_CommitStage job directory exists
+          file: path=/var/lib/jenkins/jobs/BackendApp_CommitStage state=directory
+        - name: add BackendApp_CommitStage job
+          copy: src=../BackendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
+        - name: ensure FrontendApp_CommitStage job directory exists
+          file: path=/var/lib/jenkins/jobs/FrontendApp_CommitStage state=directory
+        - name: add FrontendApp_CommitStage job
+          copy: src=../FrontendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml
+          
 
 # setup puppet
         - name: get puppet distribution
