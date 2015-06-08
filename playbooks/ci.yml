@@ -83,6 +83,8 @@
                   line="{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
                   regexp="^192\\.168\\.33\\.10"
            
+        - name: ensure .m2 directory exists
+          file: path=/var/lib/jenkins/.m2 state=directory
         - name: set m2 settings
           copy: src=../settings.xml dest=/var/lib/jenkins/.m2/settings.xml owner=jenkins group=jenkins
    
@@ -95,7 +97,7 @@
         - name: conf sonar port
           lineinfile: >
                       dest=/etc/sonarqube/conf/sonar.properties
-                      state=present
+                      state=present create=yes
                       line=sonar.web.port=8083
 
         - name: set environment variables
