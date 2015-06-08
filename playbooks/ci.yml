@@ -1,0 +1,148 @@
+---
+- name: Configure a continuous integration server 
+  hosts: ci
+  sudo: True
+  roles:
+        - { role: smola.java, java_packages: [oracle-java8-installer] }
+        - { role: hullufred.nexus }
+        - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl] }
+  tasks: 
+        - name: set java 8 default
+          shell: update-java-alternatives -s java-8-oracle
+
+        - name: add jenkins repo
+          apt_repository: >
+                           repo='deb http://pkg.jenkins-ci.org/debian binary/' 
+                           state=present
+                           update_cache=yes
+
+        - name: add key for jenkins repo
+          apt_key: >
+                    url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key 
+                    state=present
+
+        - name: install basic packages
+          apt: pkg={{item}} state=installed
+          with_items:
+          - apache2
+          - maven
+          - jenkins
+          - git
+          - unzip
+
+        - name: install phantomjs
+          apt: pkg=libfontconfig state=present
+
+        - name: install nodejs
+          apt: pkg={{item}} state=installed
+          with_items:
+          - nodejs
+          - npm
+
+        - name: link nodejs
+          file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+
+        - name: install npm packages
+          npm: name={{item}} global=true
+          with_items:
+          - grunt-cli
+          - bower
+
+        - name: create keys 
+          user: name=jenkins generate_ssh_key=yes ssh_key_type=rsa
+
+        - name: add git "server" user
+          user: name=git
+ 
+# normally we would use lookup, but there seems to be a bug        
+        - name: read public keys
+          shell: cat /var/lib/jenkins/.ssh/id_rsa.pub
+          register: publickey
+      
+        - name: set authorized keys
+          authorized_key: user=git key="{{publickey.stdout}}" manage_dir=yes
+         
+        - name: git conf
+          sudo: yes
+          sudo_user: git
+          shell: |
+                 git config --global user.name "vagrant"
+                 git config --global user.email "vagrant@omegapoint.se"
+
+        - name: clone git projects
+          sudo: yes
+          sudo_user: git
+          git: repo=https://github.com/jakobkylberg/cicd-lab-backend.git bare=yes dest=/home/git/cicd-lab-abckend.git
+          git: repo=https://github.com/jakobkylberg/ci-frontendApp.git bare=yes dest=/home/git/ci-frontendApp.git
+
+        - name: ensure jenkins knows git server
+          lineinfile: >
+                  dest=/var/lib/jenkins/.ssh/known_hosts
+                  create=yes
+                  state=present
+                  line="{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+                  regexp="^192\\.168\\.33\\.10"
+           
+        - name: ensure .m2 directory exists
+          file: path=/var/lib/jenkins/.m2 state=directory
+        - name: set m2 settings
+          copy: src=../settings.xml dest=/var/lib/jenkins/.m2/settings.xml owner=jenkins group=jenkins
+   
+        - name: add sonar repo
+          apt_repository: repo='deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/' state=present update_cache=yes
+          
+        - name: install sonar
+          apt: pkg=sonar state=present force=yes
+
+        - name: conf sonar port
+          lineinfile: >
+                      dest=/etc/sonarqube/conf/sonar.properties
+                      state=present create=yes
+                      line=sonar.web.port=8083
+
+        - name: set environment variables
+          copy: src=../environment dest=/etc/environment
+                       
+# Add jobs to jenkins
+        - name: ensure BackendApp_CommitStage job directory exists
+          file: path=/var/lib/jenkins/jobs/BackendApp_CommitStage state=directory
+        - name: add BackendApp_CommitStage job
+          copy: src=../BackendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
+        - name: ensure FrontendApp_CommitStage job directory exists
+          file: path=/var/lib/jenkins/jobs/FrontendApp_CommitStage state=directory
+        - name: add FrontendApp_CommitStage job
+          copy: src=../FrontendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml
+          
+
+# setup puppet
+        - name: get puppet distribution
+          get_url: url=https://apt.puppetlabs.com/puppetlabs-release-trusty.deb dest=/tmp/puppetlabs-release-trusty.deb
+
+        - name: install puppet
+          apt: deb=/tmp/puppetlabs-release-trusty.deb state=present
+
+        - name: install puppetmaster-passenger
+          apt: pkg=puppetmaster-passenger
+
+# hiera
+
+        - name: copy puppet conf into place
+          copy: src=../puppet/hiera/hiera.yaml dest=/etc/puppet/
+
+        - name: copy hiera data into place
+          copy: src=../puppet/hiera/{{item}} dest=/etc/puppet/hieradata/
+          with_items:
+          - test.yaml
+          - prod.yaml
+          - common.yaml
+
+        - name: copy puppet master conf
+          copy: src=../puppet/master/puppet.conf dest=/etc/puppet/puppet.conf
+
+        - name: enable puppetmaster site
+          copy: src=../puppet/master/puppetmaster.conf dest=/etc/apache2/sites-enabled/puppetmaster.conf
+
+# TODO puppet nexus plugin
+        - name: install puppet nexus module
+          sudo: yes
+          git: repo=https://github.com/cescoffier/puppet-nexus.git dest=/usr/share/puppet/modules/nexus     
