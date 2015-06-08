@@ -76,3 +76,33 @@ BuildVal ska vara av typen "build selector for copy artifact", de andra två str
 
 För att sätta versionen när vi laddar upp till nexus kan vi använda promoted_build_number som vi får in som parameter:
 ``` 1.0.${PROMOTED_BUILD_NUMBER} ```
+
+##Uppgift 3
+
+Uppgift tre går ut på att deploya artifakterna från Nexus till test- och prodmiljön m.h.a. Puppet. Puppet har ett deklarativt språk där man i något som kallas för manifest beskriver vilket tillstånd man vill att en systemresurs, t.ex. en av maskinerna i labben, ska ha. Puppet fungerar så att manifestet på mastern propageras ut till slavarna som verkställer ev. tillståndsändringar. 
+
+Idén är att man i manifestet beskriver hur backend- och frontendappen installeras och vilken version av appen som gäller. När någon av slavarna ser att en förändring skett i versionsnummer deployas den nya versionen ut. Test- och prodmaskinen är slavar till Puppet mastern som finns på ci-maskinen. Huvudmanifestet finns i ```/etc/puppet/manifests/site.pp``` på ci-maskinen.
+
+Tips:
+
+Puppet i labben finns förberett med en Nexus-modul som kan hämta artifakter från Nexus på följande sätt:
+
+```
+class { 'nexus':
+  url      => "http://192.168.33.10:8081/nexus",
+  username => "admin",
+  password => “admin123”
+}
+
+nexus::artifact { 'cicd-lab-backend':
+  gav        => "se.omegapoint:cicd-lab-backend:12",
+  repository => "public",
+  output     => "/opt/cicd-lab-backend/cicd-lab-backend-12.jar",
+  ensure     => "update"
+}
+```
+
+Vilka versionsnummer av backend- och frontendappen som är aktuella för deploy kan lämpligen hanteras med Hera som även det finns uppsatt i Puppetinstallationen på ci-maskinen. I Heras yaml-filer under ```/etc/puppet/hieradata``` kan man hålla aktuella versionnummer och separera ändringar av dessa från själva deploykonfigurationen i Puppet-manifestet. Det finns en common yaml-fil och två separata för test- och prodmaskinerna.
+
+I sitt manifest kan man komma åt properties satta i yaml-filerna så här: 
+```$backend_version = hiera("cicd-lab-backend_version")```
