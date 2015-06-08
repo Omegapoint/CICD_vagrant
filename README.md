@@ -106,9 +106,9 @@ nexus::artifact { 'cicd-lab-backend':
 }
 ```
 
-Vilka versionsnummer av backend- och frontendappen som är aktuella för deploy kan lämpligen hanteras med Hera som även det finns uppsatt i Puppetinstallationen på ci-maskinen. I Heras yaml-filer under ```/etc/puppet/hieradata``` kan man hålla aktuella versionnummer och separera ändringar av dessa från själva deploykonfigurationen i Puppet-manifestet. Det finns en common yaml-fil och två separata för test- och prodmaskinerna.
+Vilka versionsnummer av backend- och frontendappen som är aktuella för deploy kan lämpligen hanteras med Hiera som även det finns uppsatt i Puppetinstallationen på ci-maskinen. I Hieras yaml-filer under ```/etc/puppet/hieradata``` kan man hålla aktuella versionnummer och separera ändringar av dessa från själva deploykonfigurationen i Puppet-manifestet. Det finns en common yaml-fil och två separata för test- och prodmaskinerna.
 
 I sitt manifest kan man komma åt properties satta i yaml-filerna så här: 
 ```$backend_version = hiera("cicd-lab-backend_version")```
 
-På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket för att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
+På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
