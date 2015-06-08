@@ -110,3 +110,5 @@ Vilka versionsnummer av backend- och frontendappen som är aktuella för deploy 
 
 I sitt manifest kan man komma åt properties satta i yaml-filerna så här: 
 ```$backend_version = hiera("cicd-lab-backend_version")```
+
+På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket för att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
