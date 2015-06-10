@@ -70,11 +70,15 @@
                  git config --global user.name "vagrant"
                  git config --global user.email "vagrant@omegapoint.se"
 
-        - name: clone git projects
+        - name: clone git projects frontend
           sudo: yes
           sudo_user: git
-          git: repo=https://github.com/jakobkylberg/cicd-lab-backend.git bare=yes dest=/home/git/cicd-lab-abckend.git
           git: repo=https://github.com/jakobkylberg/ci-frontendApp.git bare=yes dest=/home/git/ci-frontendApp.git
+
+        - name: clone git projects backend
+          sudo: yes
+          sudo_user: git
+          git: repo=https://github.com/jakobkylberg/cicd-lab-backend.git bare=yes dest=/home/git/cicd-lab-backend.git
 
         - name: ensure jenkins knows git server
           lineinfile: >
