@@ -146,4 +146,4 @@
 # TODO puppet nexus plugin
         - name: install puppet nexus module
           sudo: yes
-          git: repo=https://github.com/cescoffier/puppet-nexus.git dest=/usr/share/puppet/modules/nexus     
+          git: repo=https://github.com/cescoffier/puppet-nexus.git dest=/etc/puppet/modules/nexus
