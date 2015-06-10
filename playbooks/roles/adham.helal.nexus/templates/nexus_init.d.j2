@@ -1,5 +1,5 @@
-#! /bin/sh
-# {{ansible_managed}}
+#!/bin/sh
+
 #
 # Copyright (c) 1999, 2006 Tanuki Software Inc.
 #
@@ -11,7 +11,7 @@
 # These settings can be modified to fit the needs of your application
 
 # Set this to the root of the Nexus installation
-NEXUS_HOME="{{ nexus_installation_dir }}/nexus-latest"
+NEXUS_HOME="{{ nexus_dir_base }}/{{ nexus_service_name }}"
 
 # If specified, the Wrapper will be run as the specified user.
 
@@ -20,7 +20,7 @@ NEXUS_HOME="{{ nexus_installation_dir }}/nexus-latest"
 # NOTE - This will set the user which is used to run the Wrapper as well as
 #  the JVM and is not useful in situations where a privileged resource or
 #  port needs to be allocated prior to the user being changed.
-RUN_AS_USER="{{nexus_os_user}}"
+RUN_AS_USER={{ nexus_user }}
 
 # Application
 APP_NAME="nexus"
@@ -31,7 +31,7 @@ APP_LONG_NAME="Nexus OSS"
 PRIORITY=
 
 # Location of the pid file.
-PIDDIR="/var/run/nexus"
+#PIDDIR="."
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
@@ -40,8 +40,8 @@ PIDDIR="/var/run/nexus"
 
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
-# chkconfig: 3 20 80
-# description: Nexus
+# chkconfig: 2345 20 80
+# description: Test Wrapper Sample Application
 
 # Do not modify anything beyond this point
 #-----------------------------------------------------------------------------
@@ -279,7 +279,7 @@ checkUser() {
             then
                 if [ "X$1" != "X" ]
                 then
-                    # Resolve the primary group 
+                    # Resolve the primary group
                     RUN_AS_GROUP=`groups $RUN_AS_USER | awk '{print $3}' | tail -1`
                     if [ "X$RUN_AS_GROUP" = "X" ]
                     then
@@ -289,11 +289,11 @@ checkUser() {
                     chown $RUN_AS_USER:$RUN_AS_GROUP $LOCKFILE
                 fi
             fi
-    
+
             # Still want to change users, recurse.  This means that the user will only be
             #  prompted for a password once. Variables shifted by 1
             su - $RUN_AS_USER -c "\"$REALPATH\" $2"
-    
+
             # Now that we are the original user again, we may need to clean up the lock file.
             if [ "X$LOCKPROP" != "X" ]
             then
@@ -307,7 +307,7 @@ checkUser() {
                     fi
                 fi
             fi
-    
+
             exit 0
         fi
     fi
@@ -394,7 +394,7 @@ console() {
         exit 1
     fi
 }
- 
+
 start() {
     echo "Starting $APP_LONG_NAME..."
     getpid
@@ -413,9 +413,9 @@ start() {
         echo "Started $APP_LONG_NAME."
     else
         echo "Failed to start $APP_LONG_NAME."
-    fi    
+    fi
 }
- 
+
 stopit() {
     echo "Stopping $APP_LONG_NAME..."
     getpid
@@ -548,5 +548,3 @@ case "$1" in
         exit 1
         ;;
 esac
-
-exit 0
