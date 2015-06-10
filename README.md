@@ -112,3 +112,9 @@ I sitt manifest kan man komma åt properties satta i yaml-filerna så här:
 ```$backend_version = hiera("cicd-lab-backend_version")```
 
 På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
+
+##Stretch goals
+1. På ci-maskinen finns det en sonarserver som kan användas för att lägga till ett byggsteg som granskar en applikations kodkvalitet. 
+   Mer information om Sonar och hur man kan integrera Sonar med Jenkins finns här: http://docs.sonarqube.org/display/SONAR/Documentation.
+   
+2. CI-maskinen provisioneras med hjälp av ansible, skriv om provisioneringsscripten för test och prod boxen så att dessa också provisioneras med hjälp av ansible. 
