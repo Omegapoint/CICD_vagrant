@@ -89,10 +89,13 @@
                   regexp="^192\\.168\\.33\\.10"
            
         - name: ensure .m2 directory exists
-          file: path=/var/lib/jenkins/.m2 state=directory
+          file: path=/var/lib/jenkins/.m2 state=directory owner=jenkins group=jenkins
         - name: set m2 settings
           copy: src=../settings.xml dest=/var/lib/jenkins/.m2/settings.xml owner=jenkins group=jenkins
-   
+
+        - name: set jenkins as owner of known_hosts
+          file: path=/var/lib/jenkins/.ssh/known_hosts owner=jenkins group=jenkins
+
         - name: add sonar repo
           apt_repository: repo='deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/' state=present update_cache=yes
           
