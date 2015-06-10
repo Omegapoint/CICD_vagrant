@@ -6,7 +6,7 @@
         - { role: smola.java, java_packages: [oracle-java8-installer] }
 #        - { role: hullufred.nexus }
         - { role: adham.helal.nexus }
-        - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl] }
+        - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl, delivery-pipeline-plugin] }
   tasks: 
         - name: set java 8 default
           shell: update-java-alternatives -s java-8-oracle
