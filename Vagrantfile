@@ -33,20 +33,20 @@ Vagrant.configure(2) do |config|
 	  #   sudo apt-get update
 	  #   sudo apt-get install -y apache2
 	  # SHELL  
-	  ci.vm.provision :shell, path: "bootstrap_ci.sh"
-#		require 'rbconfig'
-#		is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
-#		if is_windows
+	 # ci.vm.provision :shell, path: "bootstrap_ci.sh"
+		require 'rbconfig'
+		is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+		if is_windows
 			# Provisioning configuration for shell script.
-#			ci.vm.provision "shell" do |sh|			
-#				sh.path = "playbooks/JJG-Ansible-Windows/windows.sh"
-#				sh.args = "playbooks/ci.yml"				
-#			end
-#		else
-#			ci.vm.provision "ansible" do |ansible|
-#				ansible.playbook = "playbooks/ci.yml"
-#			end
-#		end
+			ci.vm.provision "shell" do |sh|			
+				sh.path = "playbooks/JJG-Ansible-Windows/windows.sh"
+				sh.args = "playbooks/ci.yml"				
+			end
+		else
+			ci.vm.provision "ansible" do |ansible|
+				ansible.playbook = "playbooks/ci.yml"
+			end
+		end
   end
 
 
