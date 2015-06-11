@@ -1,6 +1,6 @@
 ---
 - name: Configure a continuous integration server 
-  hosts: ci
+  hosts: all
   sudo: True
   roles:
         - { role: smola.java, java_packages: [oracle-java8-installer] }
