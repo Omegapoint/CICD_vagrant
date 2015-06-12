@@ -85,7 +85,7 @@
                   dest=/var/lib/jenkins/.ssh/known_hosts
                   create=yes
                   state=present
-                  line="{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+                  line="{{ lookup('pipe', 'ssh-keyscan -t rsa 192.168.33.10') }}"
                   regexp="^192\\.168\\.33\\.10"
            
         - name: ensure .m2 directory exists
@@ -113,13 +113,13 @@
                        
 # Add jobs to jenkins
         - name: ensure BackendApp_CommitStage job directory exists
-          file: path=/var/lib/jenkins/jobs/BackendApp_CommitStage state=directory
+          file: path=/var/lib/jenkins/jobs/BackendApp_CommitStage state=directory owner=jenkins group=jenkins
         - name: add BackendApp_CommitStage job
-          copy: src=../BackendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml
+          copy: src=../BackendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml owner=jenkins group=jenkins
         - name: ensure FrontendApp_CommitStage job directory exists
-          file: path=/var/lib/jenkins/jobs/FrontendApp_CommitStage state=directory
+          file: path=/var/lib/jenkins/jobs/FrontendApp_CommitStage state=directory owner=jenkins group=jenkins
         - name: add FrontendApp_CommitStage job
-          copy: src=../FrontendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml
+          copy: src=../FrontendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml  owner=jenkins group=jenkins
           
 
 # setup puppet
