@@ -77,7 +77,19 @@ Vagrant.configure(2) do |config|
 	  #   sudo apt-get update
 	  #   sudo apt-get install -y apache2
 	  # SHELL  
-	  test.vm.provision :shell, path: "bootstrap_test.sh"
+		require 'rbconfig'
+		is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+		if is_windows
+			# Provisioning configuration for shell script.
+			test.vm.provision "shell" do |sh|
+				sh.path = "playbooks/JJG-Ansible-Windows/windows.sh"
+				sh.args = "playbooks/test.yml"
+			end
+		else
+			test.vm.provision "ansible" do |ansible|
+				ansible.playbook = "playbooks/test.yml"
+			end
+		end
   end
   
   
@@ -108,6 +120,18 @@ Vagrant.configure(2) do |config|
 	  #   sudo apt-get update
 	  #   sudo apt-get install -y apache2
 	  # SHELL  
-	  prod.vm.provision :shell, path: "bootstrap_prod.sh"
+		require 'rbconfig'
+		is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+		if is_windows
+			# Provisioning configuration for shell script.
+			prod.vm.provision "shell" do |sh|
+				sh.path = "playbooks/JJG-Ansible-Windows/windows.sh"
+				sh.args = "playbooks/prod.yml"
+			end
+		else
+			prod.vm.provision "ansible" do |ansible|
+				ansible.playbook = "playbooks/prod.yml"
+			end
+		end
   end
 end
