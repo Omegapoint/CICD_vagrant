@@ -18,7 +18,10 @@ update-java-alternatives -s java-8-oracle
 
 
 # Basic stuff
-apt-get install -y apache2 maven jenkins git unzip
+apt-get install -y apache2 maven jenkins git unzip dos2unix
+pushd /vagrant
+find . -type f -print0 | xargs -0 dos2unix
+popd
 
 # Needed for phantomjs to work
 sudo apt-get install -y libfontconfig
@@ -137,3 +140,6 @@ sudo service jenkins start
 
 # Set environment variables
 sudo cp /vagrant/environment /etc/environment
+
+# Restart Jenkins to make sure plugins are loaded
+sudo service jenkins restart
