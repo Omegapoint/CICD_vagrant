@@ -1,0 +1,26 @@
+---
+- name: Configure a production server
+  hosts: all
+  sudo: True
+  roles:
+        - { role: ansible-java8-oracle }
+  tasks:
+        - name: set java 8 default
+          shell: update-java-alternatives -s java-8-oracle
+
+        - name: install basic packages
+          apt: pkg={{item}} state=installed
+          with_items:
+          - apache2
+          - maven
+          - git
+          - unzip
+
+        - name: add jenkins user
+          user: name=jenkins
+
+        - name: copy startup script
+          copy: src=../cicd-lab-backend.sh dest=/etc/init.d mode=700
+
+        - name: set environment variables
+          copy: src=../environment_run dest=/etc/environment
