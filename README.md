@@ -1,4 +1,4 @@
-﻿#Kompetensdag CI/CD dag 2
+﻿#CI/CD - Skapa din egen byggpipeline
 
 ##Förberedelser
 
