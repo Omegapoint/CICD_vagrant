@@ -52,20 +52,20 @@ user: admin
 password: admin
 
 ####Git:
-På din host-dator:
 
-```$ ssh-add keys/id_rsa```
+För att kunna arbeta mot de två git-repon som finns på behövs en uppsättning SSH-nycklar. Börja med att se efter om du redan har en publik nyckel:
 
-```$ git clone git@192.168.33.10:cicd-lab-backend.git```
+```$ ls -al ~/.ssh```
 
-```$ git clone git@192.168.33.10:ci-frontendApp.git```
+Finns en .pub-fil som t.ex. id_rsa.pub finns det redan en nyckeluppsättning, annars behöver det genereras:
 
-Om du kör windows:
-Öppna git bash och kör följande
+```$ ssh-keygen -t rsa```
 
-```$ eval $(ssh-agent)```
+Därefter kan din publika nyckel adderas till authorized_keys hos git-användaren:
 
-```$ ssh-add keys/id_rsa```
+```$ cat ~/.ssh/id_rsa.pub | ssh vagrant@192.168.33.10 "sudo tee -a /home/git/.ssh/authorized_keys"```
+
+De två applikationerna kan sedan klonas som vanligt:
 
 ```$ git clone git@192.168.33.10:cicd-lab-backend.git```
 
