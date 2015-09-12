@@ -30,6 +30,10 @@
           - jenkins
           - git
           - unzip
+          - dos2unix
+
+        - name: run dos2unix on shared files
+          command: /usr/bin/find /vagrant -type f -print0 -exec /usr/bin/dos2unix {} \;
 
         - name: install phantomjs
           apt: pkg=libfontconfig state=present
