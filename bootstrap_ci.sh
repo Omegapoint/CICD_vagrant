@@ -18,7 +18,10 @@ update-java-alternatives -s java-8-oracle
 
 
 # Basic stuff
-apt-get install -y apache2 maven jenkins git unzip
+apt-get install -y apache2 maven jenkins git unzip dos2unix
+pushd /vagrant
+find . -type f -print0 | xargs -0 dos2unix
+popd
 
 # Needed for phantomjs to work
 sudo apt-get install -y libfontconfig
@@ -160,28 +163,5 @@ sudo service jenkins restart
 # Set environment variables
 sudo cp /vagrant/environment /etc/environment
 
-# Add addresses for puppet
-sudo cat /vagrant/hosts >> /etc/hosts
-
-# Setup puppet
-cd ~; wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
-sudo dpkg -i puppetlabs-release-trusty.deb
-sudo apt-get update
-sudo apt-get -y -q install puppetmaster-passenger
-sudo service apache2 stop
-sudo touch /etc/puppet/manifests/site.pp
-
-#hiera
-sudo cp /vagrant/puppet/hiera/hiera.yaml /etc/
-sudo mkdir /etc/puppet/hieradata
-sudo cp /vagrant/puppet/hiera/test.yaml /etc/puppet/hieradata
-sudo cp /vagrant/puppet/hiera/prod.yaml /etc/puppet/hieradata
-sudo cp /vagrant/puppet/hiera/common.yaml /etc/puppet/hieradata
-
-sudo cp /vagrant/puppet/master/puppet.conf /etc/puppet/puppet.conf
-sudo rm -rf /var/lib/puppet/ssl
-sudo cp /vagrant/puppet/master/puppetmaster.conf /etc/apache2/sites-enabled/puppetmaster.conf
-# Install the puppet-nexus plugin
-sudo mkdir /usr/share/puppet/modules
-cd /etc/puppet/modules
-sudo git clone https://github.com/cescoffier/puppet-nexus.git nexus
+# Restart Jenkins to make sure plugins are loaded
+sudo service jenkins restart
