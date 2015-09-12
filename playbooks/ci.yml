@@ -3,7 +3,7 @@
   hosts: all
   sudo: True
   roles:
-        - { role: smola.java, java_packages: [oracle-java8-installer] }
+        - { role: ansible-java8-oracle }
 #        - { role: hullufred.nexus }
         - { role: adham.helal.nexus }
         - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl, delivery-pipeline-plugin] }
@@ -110,47 +110,3 @@
 
         - name: set environment variables
           copy: src=../environment dest=/etc/environment
-                       
-# Add jobs to jenkins
-        - name: ensure BackendApp_CommitStage job directory exists
-          file: path=/var/lib/jenkins/jobs/BackendApp_CommitStage state=directory owner=jenkins group=jenkins
-        - name: add BackendApp_CommitStage job
-          copy: src=../BackendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/BackendApp_CommitStage/config.xml owner=jenkins group=jenkins
-        - name: ensure FrontendApp_CommitStage job directory exists
-          file: path=/var/lib/jenkins/jobs/FrontendApp_CommitStage state=directory owner=jenkins group=jenkins
-        - name: add FrontendApp_CommitStage job
-          copy: src=../FrontendApp_CommitStage.xml dest=/var/lib/jenkins/jobs/FrontendApp_CommitStage/config.xml  owner=jenkins group=jenkins
-          
-
-# setup puppet
-        - name: get puppet distribution
-          get_url: url=https://apt.puppetlabs.com/puppetlabs-release-trusty.deb dest=/tmp/puppetlabs-release-trusty.deb
-
-        - name: install puppet
-          apt: deb=/tmp/puppetlabs-release-trusty.deb state=present
-
-        - name: install puppetmaster-passenger
-          apt: pkg=puppetmaster-passenger
-
-# hiera
-
-        - name: copy puppet conf into place
-          copy: src=../puppet/hiera/hiera.yaml dest=/etc/puppet/
-
-        - name: copy hiera data into place
-          copy: src=../puppet/hiera/{{item}} dest=/etc/puppet/hieradata/
-          with_items:
-          - test.yaml
-          - prod.yaml
-          - common.yaml
-
-        - name: copy puppet master conf
-          copy: src=../puppet/master/puppet.conf dest=/etc/puppet/puppet.conf
-
-        - name: enable puppetmaster site
-          copy: src=../puppet/master/puppetmaster.conf dest=/etc/apache2/sites-enabled/puppetmaster.conf
-
-# TODO puppet nexus plugin
-        - name: install puppet nexus module
-          sudo: yes
-          git: repo=https://github.com/cescoffier/puppet-nexus.git dest=/etc/puppet/modules/nexus
