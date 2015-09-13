@@ -115,4 +115,4 @@
           copy: src=../environment dest=/etc/environment
 
         - name: fetch public jenkins key and make it available for the test and prod machines
-          fetch: src=/var/lib/jenkins/.ssh/id_rsa.pub dest=../jenkins_keys/id_rsa.pub
+          fetch: src=/var/lib/jenkins/.ssh/id_rsa.pub dest=../jenkins_keys/id_rsa.pub flat=yes
