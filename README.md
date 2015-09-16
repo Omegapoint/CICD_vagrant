@@ -18,6 +18,7 @@
 
 8. Kör ```vagrant up``` i den klonade projektkatalogen. 
  - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
+
 9. Vänta (kan ta upp emot 45 min)
 
 ##Förutsättningar
