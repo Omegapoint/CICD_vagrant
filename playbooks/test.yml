@@ -16,7 +16,11 @@
           - git
           - unzip
           - rpm
-
+           
+        - name: change owner apache2
+          sudo_user: vagrant
+          command: bash -lc "sudo chown vagrant:vagrant /var/www/html"
+ 
         - name: add jenkins user
           user: name=jenkins
 
