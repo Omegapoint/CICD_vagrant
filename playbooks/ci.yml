@@ -30,6 +30,11 @@
           - git
           - unzip
           - dos2unix
+          - rpm
+          - ruby-dev
+
+        - name: install gems
+          gem: name=fpm state=present
 
         - name: run dos2unix on shared files
           command: /usr/bin/find /vagrant -type f -print0 -exec /usr/bin/dos2unix {} \;

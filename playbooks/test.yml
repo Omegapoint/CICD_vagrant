@@ -12,9 +12,10 @@
           apt: pkg={{item}} state=installed
           with_items:
           - apache2
-          - maven
+          - maven		  
           - git
           - unzip
+          - rpm
 
         - name: add jenkins user
           user: name=jenkins
