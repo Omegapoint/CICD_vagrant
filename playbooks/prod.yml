@@ -15,6 +15,7 @@
           - maven
           - git
           - unzip
+          - rpm
 
         - name: add jenkins user
           user: name=jenkins

@@ -30,7 +30,13 @@
           - git
           - unzip
           - dos2unix
+          - rpm
+          - ruby-dev
 
+        - name: install fpm
+          sudo_user: vagrant
+          command: bash -lc "sudo gem install fpm"
+          
         - name: run dos2unix on shared files
           command: /usr/bin/find /vagrant -type f -print0 -exec /usr/bin/dos2unix {} \;
 
@@ -115,4 +121,4 @@
           copy: src=../environment dest=/etc/environment
 
         - name: fetch public jenkins key and make it available for the test and prod machines
-          fetch: src=/var/lib/jenkins/.ssh/id_rsa.pub dest=../jenkins_keys/id_rsa.pub
+          fetch: src=/var/lib/jenkins/.ssh/id_rsa.pub dest=../jenkins_keys/id_rsa.pub flat=yes
