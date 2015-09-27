@@ -46,7 +46,7 @@ user: admin
 password: admin123
 
 ####Sonar:
-http://192.168.33.10:8083
+http://192.168.33.10:9000
 
 user: admin 
 password: admin
