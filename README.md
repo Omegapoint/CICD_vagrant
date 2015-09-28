@@ -65,7 +65,7 @@ Därefter kan din publika nyckel adderas till authorized_keys hos git-användare
 
 ```$ cat ~/.ssh/id_rsa.pub | ssh vagrant@192.168.33.10 "sudo tee -a /home/git/.ssh/authorized_keys"```
 
-Om du frågas efter lösenord till vagrant-användaren så är lösenordet 'vagrant'.
+Får du upp en lösenordsprompt är lösenordet till vagrant-användaren 'vagrant'.
 
 De två applikationerna kan sedan klonas som vanligt:
 
