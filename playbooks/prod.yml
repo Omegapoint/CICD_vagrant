@@ -20,8 +20,8 @@
         - name: add jenkins user
           user: name=jenkins
 
-        - name: copy startup script
-          copy: src=../cicd-lab-backend.sh dest=/etc/init.d mode=700
+        - name: copy init.d script for the backend application
+          copy: src=../cicd-lab-backend.sh dest=/etc/init.d/cicd-lab-backend mode=0755
 
         - name: set environment variables
           copy: src=../environment_run dest=/etc/environment

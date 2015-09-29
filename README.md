@@ -1,4 +1,4 @@
-﻿#CI/CD - Skapa din egen byggpipeline
+#CI/CD - Skapa din egen byggpipeline
 
 ##Förberedelser
 
