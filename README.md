@@ -119,6 +119,8 @@ Gitrepo: git@192.168.33.10:cicd-lab-backend.git
 
 På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
 
+På windowsmaskiner kan man behöva ändra ```ps -p``` till ```ps p``` i application.sh-skriptet för att få det att fungera.
+
 ###Frontendapplikationen
 
 Frontendapplikationen är byggd m.h.a. AngularJs och innehåller även ett par enhetstester. På både test- och prodmaskinen finns det en Apache webserver som kan användas när frontendapplikationen ska deployas.
