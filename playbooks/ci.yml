@@ -32,6 +32,7 @@
           - dos2unix
           - rpm
           - ruby-dev
+          - ansible
 
         - name: install fpm
           sudo_user: vagrant
@@ -88,6 +89,11 @@
           sudo: yes
           sudo_user: git
           git: repo=https://github.com/jakobkylberg/cicd-lab-backend.git bare=yes dest=/home/git/cicd-lab-backend.git
+
+        - name: clone ansible project
+          sudo: yes
+          sudo_user: git
+          git: repo=https://github.com/jakobkylberg/cicd-lab-ansible.git bare=yes dest=/home/git/cicd-lab-ansible.git
 
         - name: ensure jenkins knows git server
           lineinfile: >
