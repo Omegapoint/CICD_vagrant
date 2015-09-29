@@ -65,6 +65,8 @@ Därefter kan din publika nyckel adderas till authorized_keys hos git-användare
 
 ```$ cat ~/.ssh/id_rsa.pub | ssh vagrant@192.168.33.10 "sudo tee -a /home/git/.ssh/authorized_keys"```
 
+Får du upp en lösenordsprompt är lösenordet till vagrant-användaren 'vagrant'.
+
 De två applikationerna kan sedan klonas som vanligt:
 
 ```$ git clone git@192.168.33.10:cicd-lab-backend.git```
@@ -116,6 +118,8 @@ Gitrepo: git@192.168.33.10:cicd-lab-backend.git
 ```$ ./application.sh [start|stop|restart|debug|status]```
 
 På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
+
+På windowsmaskiner kan man behöva ändra ```ps -p``` till ```ps p``` i application.sh-skriptet för att få det att fungera.
 
 ###Frontendapplikationen
 
