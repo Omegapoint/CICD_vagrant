@@ -165,6 +165,57 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
 Målet med labben är att sätta upp två fungerande byggpipelines: för backend- respektive frontendapplikationen som finns i ci-maskinens två gitrepon. Byggpipelinerna ska bygga, testa och deploya applikationen till test-miljön automatiskt och ett bygge ska triggas på push till applikationens gitrepo. Byggpipelinerna görs lämpligtvis som en serie kedjade Jenkinsjobb och kan visualiseras m.h.a. Jenkins Build Pipeline-plugin. Ett sista manuellt triggat steg ska kunna deploya ett bygge till produktionsmiljön. Om en push till gitrepot innehåller enhetstester som inte är gröna ska bygget fallera.
 
+##Labbinstruktioner
+
+###Del 1 - Konfigurera jenkinsjobb
+Efter att vagrant satt up boxarna så körs en jenkinsserver på ci-boxen, den kommer du åt via http://192.168.33.10:8080
+Det första du behöver göra är att konfigurera två jobb, ett för frontend applikationen och ett för backend applikationen.
+Jobben ska inledningsvis checka ut koden från git, köra enhetstester och sedan bygga applikationen.
+Backendjobbet ska konfigureras som ett maven projekt, medan frontend applikationen ska konfigureras som ett free-style projekt.
+
+###Del 2 - Konfigurera git och jenkins
+Börja med att följa instruktionerna från readme filen angående git och git projekten. När du checkat ut koden för applikationerna så ska du konfigurera git så att en incheckning notifierar jenkins att köra ett bygge. Vi vill alltså inte använda en pull-teknik där jenkins enligt något tidsintervall kollar om något förändrats i git-repot.
+Vi kan göra detta genom att lägga till en git-hook, vi vill notifiera jenkins om att något har förändrats efter en push till origin. 
+Utför följande steg:
+
+I jenkins jobben, checka i “poll SCM”, men utelämna tidsinställningarna. Testa att jenkins svarar på följande GET-anrop: http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>
+För bägge applikationerna, lägg in följande script i en fil med namnet post-receive. Den ska ligga i hooks katalogen för respektive repo på ci boxen: 
+```#!/bin/sh curl http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>```
+Sätt ägare på filen och gör den exekverbar genom: ```sudo chown git:git post-receive```, ```sudo chmod +x post-receive``` Verifiera att push-tekniken fungerar genom att i host-miljön checka ut applikationerna, gör en förändring i någon fil och pusha förändringarna till git servern. Då ska ett nytt bygge exekveras på jenkinsservern.
+
+###Del 3 - Testautomatisering
+Nu när du har applikationerna utcheckade och två jobb konfigurerade som exekverar byggen på push till git så ska du lägga till eller modifera tester i applikationerna. I javaapplikationen skrivs tester med junit och spring framework. I frontend applikationen skrivs tester med jasmine. Skriv ett test som fallerar och checka in koden, du ska sedan se i jenkins att bygget markeras som fallerat. Ändra i testklassen så att alla tester går igenom, pusha koden och verifiera i jenkins.
+
+###Del 4 - Continuous delivery
+I denna del ska du skapa deployjobb som automatiskt installerar applikationerna i test och prodmiljö. 
+
+####Frontendapplikationen
+
+Vi kommer används rpm och programmet fpm för att skapa rpm:er.
+Utför följande steg:
+I ditt första jobb, lägg till att applikationen taggas i git för stabila byggen. Sedan ska du bygga ett annat projekt när bygget är stabilt, vilket blir deployjobbet.
+Skapa ett deployjobb som kopierar artefakter från ett annat projekt, välj det jobb som du tidigare jobbat med.
+Sätt upp en sträng parameter till jobbet, denna parameter kommer innehålla byggnummret för artefakten som ska skapas och installeras.
+Skriv ett shellscript i bygget som utför följande (exempel frontendapp):
+```cd dist```
+```fpm -s dir -t rpm -n mc-angular -v 1.0.${Param} --verbose --directories mc-angular --category op/application  --description "Angular-applikation mc-angular"  --rpm-user vagrant --rpm-group vagrant --rpm-defattrfile 644 --rpm-defattrdir 755 --prefix /var/www/html mc-angular```
+Skicka filen till testmiljön genom: ```rsync -v -e ssh "mc-angular-1.0."${Param}"-1.x86_64.rpm" jenkins@192.168.33.20:~```
+Skapa en ssh-inloggning mot testmiljön med ssh plugin och kör följande script: 
+```cd /home/jenkins``` 
+```rpm -ivh "mc-angular-1.0."${Param}"-1.x86_64.rpm"```
+
+####Backendapplikationen
+Det enklaste sättet är att deploya applikationen är som följer:
+
+Skapa ett nytt deployjobb som kopierar artifakter från det jobb som du först skapade för att bygga och testa applikationen.
+Lägg till en trigger i ditt första byggjobb som om det första jobbet har lyckats triggar den nya deployjobbet. Låt även det första jobbet skicka med byggnumret som parameter till deployjobbet.
+Använd byggnummerparametern från det första jobbet för att kopiera rätt artifakt.
+Själva deployen görs i fyra steg och kan köras som ett shellskript i ett jenkinsjobb:
+1. Stoppa applikationen på servern
+2. Radera föregående artifakt
+3. Kopiera (m.h.a. scp eller rsync) ut den nya artfakten till servern
+4. Starta applikationen på servern
+
 ##Stretch goals
 
 På ci-maskinen finns det en sonarserver som kan användas för att lägga till ett byggsteg som granskar en applikations kodkvalitet. Mer information om Sonar och hur man kan integrera Sonar med Jenkins finns här: http://docs.sonarqube.org/display/SONAR/Documentation.
