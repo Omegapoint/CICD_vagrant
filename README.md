@@ -21,6 +21,9 @@
 
 9. Vänta (kan ta upp emot 45 min)
 
+Ibland kan ett enskilt steg i provisionering fallera pga exv att en nedladdning timear ut. I så fall kan man köra om provisioneringen med ```vagrant reload --provision <maskinnamn>````. Delar av provisionering som har lyckats kommer då inte att köras om.
+
+
 ##Förutsättningar
 
 Det finns tre virtuella maskiner i labben. Den första, ci/cd-maskinen, innehåller Jenkins, Sonar och de två git-repona med labbens testapplikationer. Vidare finns två maskiner, test och prod, som simulerar en test- respektive produktionsmiljö.
