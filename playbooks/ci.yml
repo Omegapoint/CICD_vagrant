@@ -1,24 +1,24 @@
 ---
-- name: Configure a continuous integration server 
+- name: Configure a continuous integration server
   hosts: all
   sudo: True
   roles:
         - { role: ansible-java8-oracle }
         - { role: adham.helal.nexus }
         - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl, delivery-pipeline-plugin] }
-  tasks: 
+  tasks:
         - name: set java 8 default
           shell: update-java-alternatives -s java-8-oracle
 
         - name: add jenkins repo
           apt_repository: >
-                           repo='deb http://pkg.jenkins-ci.org/debian binary/' 
+                           repo='deb http://pkg.jenkins-ci.org/debian binary/'
                            state=present
                            update_cache=yes
 
         - name: add key for jenkins repo
           apt_key: >
-                    url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key 
+                    url=http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key
                     state=present
 
         - name: install basic packages
@@ -37,7 +37,7 @@
         - name: install fpm
           sudo_user: vagrant
           command: bash -lc "sudo gem install fpm"
-          
+
         - name: run dos2unix on shared files
           command: /usr/bin/find /vagrant -type f -print0 -exec /usr/bin/dos2unix {} \;
 
@@ -59,20 +59,20 @@
           - grunt-cli
           - bower
 
-        - name: create keys 
+        - name: create keys
           user: name=jenkins generate_ssh_key=yes ssh_key_type=rsa
 
         - name: add git "server" user
           user: name=git
- 
-# normally we would use lookup, but there seems to be a bug        
+
+# normally we would use lookup, but there seems to be a bug
         - name: read public keys
           shell: cat /var/lib/jenkins/.ssh/id_rsa.pub
           register: publickey
-      
+
         - name: set authorized keys
           authorized_key: user=git key="{{publickey.stdout}}" manage_dir=yes
-         
+
         - name: git conf
           sudo: yes
           sudo_user: git
@@ -102,7 +102,7 @@
                   state=present
                   line="{{ lookup('pipe', 'ssh-keyscan -t rsa 192.168.33.10') }}"
                   regexp="^192\\.168\\.33\\.10"
-           
+
         - name: ensure .m2 directory exists
           file: path=/var/lib/jenkins/.m2 state=directory owner=jenkins group=jenkins
         - name: set m2 settings
@@ -113,7 +113,7 @@
 
         - name: add sonar repo
           apt_repository: repo='deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/' state=present update_cache=yes
-          
+
         - name: install sonar
           apt: pkg=sonar state=present force=yes
 
@@ -122,9 +122,15 @@
                       dest=/etc/sonarqube/conf/sonar.properties
                       state=present create=yes
                       line=sonar.web.port=8083
+          notify: restart sonar
 
         - name: set environment variables
           copy: src=../environment dest=/etc/environment
 
         - name: fetch public jenkins key and make it available for the test and prod machines
           fetch: src=/var/lib/jenkins/.ssh/id_rsa.pub dest=../jenkins_keys/id_rsa.pub flat=yes
+
+  handlers:
+    - name: restart sonar
+      service: name=sonar state=restarted
+       
