@@ -16,7 +16,7 @@
 7. Installera ansible
    ```sudo pip install ansible```
 
-8. Kör ```vagrant up``` i den klonade projektkatalogen. 
+8. Kör ```vagrant up``` i den klonade projektkatalogen.
  - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
 
 9. Vänta (kan ta upp emot 45 min)
@@ -45,13 +45,13 @@ http://192.168.33.10:8080
 ####Nexus:
 http://192.168.33.10:8081/nexus
 
-user: admin 
+user: admin
 password: admin123
 
 ####Sonar:
 http://192.168.33.10:9000
 
-user: admin 
+user: admin
 password: admin
 
 ####Git:
@@ -66,7 +66,7 @@ Finns en .pub-fil som t.ex. id_rsa.pub finns det redan en nyckeluppsättning, an
 
 Därefter kan din publika nyckel adderas till authorized_keys hos git-användaren:
 
-```$ cat ~/.ssh/id_rsa.pub | ssh vagrant@192.168.33.10 "sudo tee -a /home/git/.ssh/authorized_keys"```
+```$ cat ~/.ssh/id_rsa.pub | ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@192.168.33.10 "sudo tee -a /home/git/.ssh/authorized_keys"```
 
 Får du upp en lösenordsprompt är lösenordet till vagrant-användaren 'vagrant'.
 
@@ -105,19 +105,19 @@ Backendapplikationen är skriven i Java, använder sig utav Spring boot och har 
 Gitrepo: git@192.168.33.10:cicd-lab-backend.git
 
  - Bygg:
- 
+
 ```$ mvn clean package```
 
  - Packa upp tar.gz:en i lämplig katalog t.ex.:
- 
+
 ```$ tar xzvf target/cicd-lab-backend-1.0-bin.tar.gz -C ~```
 
  - Starta applikationen:
- 
+
 ```$ cd ~/cicd-lab-backend-1.0 && ./application.sh start```
 
  - application.sh-skriptet kan bl.a. starta, stoppa och visa status:
- 
+
 ```$ ./application.sh [start|stop|restart|debug|status]```
 
 På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
@@ -131,7 +131,7 @@ Frontendapplikationen är byggd m.h.a. AngularJs och innehåller även ett par e
 Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
  - Installera först node, sedan:
- 
+
 ```$ npm install -g grunt-cli```
 
 ```$ npm install -g bower```
@@ -140,20 +140,20 @@ Gitrepo: git@192.168.33.10:ci-frontendApp.git
 
 ```$ bower install```
 
- - Köra applikationen: 
- 
+ - Köra applikationen:
+
 ```$ grunt serve```
 
- - Köra tester: 
+ - Köra tester:
    Här behöver phantomjs och karma-phantomjs-launcher vara installerade.
- 
+
 ```$ grunt test```
 
  - Bygga applikationen:
-  
+
 ```$ grunt build```
 
- - Skapa /var/www/html/mc-angular/config/settings.json i testmiljön med följande innehåll: 
+ - Skapa /var/www/html/mc-angular/config/settings.json i testmiljön med följande innehåll:
 
 ```{ "REST_ENDPOINT": "http://192.168.33.20:8080" }```
 
