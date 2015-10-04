@@ -193,30 +193,35 @@ I denna del ska du skapa deployjobb som automatiskt installerar applikationerna 
 
 Vi kommer används rpm och programmet fpm för att skapa rpm:er.
 Utför följande steg:
-I ditt första jobb, lägg till att applikationen taggas i git för stabila byggen. Sedan ska du bygga ett annat projekt när bygget är stabilt, vilket blir deployjobbet.
-Skapa ett deployjobb som kopierar artefakter från ett annat projekt, välj det jobb som du tidigare jobbat med.
-Sätt upp en sträng parameter till jobbet, denna parameter kommer innehålla byggnummret för artefakten som ska skapas och installeras.
-Skriv ett shellscript i bygget som utför följande (exempel frontendapp):
+
+1. I ditt första jobb, lägg till att applikationen taggas i git för stabila byggen. Sedan ska du bygga ett annat projekt när bygget är stabilt, vilket blir deployjobbet.
+2. Skapa ett deployjobb som kopierar artefakter från ett annat projekt, välj det jobb som du tidigare jobbat med.
+3. Sätt upp en sträng parameter till jobbet, denna parameter kommer innehålla byggnummret för artefakten som ska skapas och installeras.
+4. Skriv ett shellscript i bygget som utför följande (exempel frontendapp):
 ```cd dist```
 ```fpm -s dir -t rpm -n mc-angular -v 1.0.${Param} --verbose --directories mc-angular --category op/application  --description "Angular-applikation mc-angular"  --rpm-user vagrant --rpm-group vagrant --rpm-defattrfile 644 --rpm-defattrdir 755 --prefix /var/www/html mc-angular```
-Skicka filen till testmiljön genom: ```rsync -v -e ssh "mc-angular-1.0."${Param}"-1.x86_64.rpm" jenkins@192.168.33.20:~```
-Skapa en ssh-inloggning mot testmiljön med ssh plugin och kör följande script: 
+5. Skicka filen till testmiljön genom: ```rsync -v -e ssh "mc-angular-1.0."${Param}"-1.x86_64.rpm" jenkins@192.168.33.20:~```
+6. Skapa en ssh-inloggning mot testmiljön med ssh plugin och kör följande script: 
 ```cd /home/jenkins``` 
 ```rpm -ivh "mc-angular-1.0."${Param}"-1.x86_64.rpm"```
 
 ####Backendapplikationen
 Det enklaste sättet är att deploya applikationen är som följer:
 
-Skapa ett nytt deployjobb som kopierar artifakter från det jobb som du först skapade för att bygga och testa applikationen.
-Lägg till en trigger i ditt första byggjobb som om det första jobbet har lyckats triggar den nya deployjobbet. Låt även det första jobbet skicka med byggnumret som parameter till deployjobbet.
-Använd byggnummerparametern från det första jobbet för att kopiera rätt artifakt.
-Själva deployen görs i fyra steg och kan köras som ett shellskript i ett jenkinsjobb:
-1. Stoppa applikationen på servern
-2. Radera föregående artifakt
-3. Kopiera (m.h.a. scp eller rsync) ut den nya artfakten till servern
-4. Starta applikationen på servern
+1. Skapa ett nytt deployjobb som kopierar artifakter från det jobb som du först skapade för att bygga och testa applikationen.
+2. Lägg till en trigger i ditt första byggjobb som om det första jobbet har lyckats triggar den nya deployjobbet. Låt även det första jobbet skicka med byggnumret som parameter till deployjobbet.
+3. Använd byggnummerparametern från det första jobbet för att kopiera rätt artifakt.
+4. Själva deployen görs i fyra steg och kan köras som ett shellskript i ett jenkinsjobb:
+ 1. Stoppa applikationen på servern
+ 2. Radera föregående artifakt
+ 3. Kopiera (m.h.a. scp eller rsync) ut den nya artfakten till servern
+ 4. Starta applikationen på servern
+
+På test- och prodmaskinerna finns det ett init.d-skript ```/etc/init.d/cicd-lab-backend``` som kan starta och stoppa applikationen. Skriptet förutsätter att applikationens jar:er placeras i ```/opt/cicd-lab-backend```.
 
 ##Stretch goals
+
+Deployprocesserna ovan består i att man från Jenknis med små bashscript distribuerar ut och startar artifakter. Ett bättre sätt att hantera deploy på är att använda sig utav ett verktyg som är till för att underlätta just driftsättning. Ett förslag är att använda sig av Ansible, http://ansible.com/, som abstraherar bort allt ssh:ande och har en enkel yaml-syntax för att beskriva en deployprocess. Genom att inte ha deployprocessen beskriven direkt i Jenkinsjobben öppnar också upp möjligheten till att versionshantera deployskripten och deploykonfigurationen vilket alltid är att föredra. Ansible finns redan installerat på ci-maskinen och det finns också ett git-repo på samma maskin, ```git@192.168.33.10:cicd-lab-ansible.git```, med ett skelett för att komma igång med Ansible. 
 
 På ci-maskinen finns det en sonarserver som kan användas för att lägga till ett byggsteg som granskar en applikations kodkvalitet. Mer information om Sonar och hur man kan integrera Sonar med Jenkins finns här: http://docs.sonarqube.org/display/SONAR/Documentation.
 
