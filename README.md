@@ -221,9 +221,35 @@ På test- och prodmaskinerna finns det ett init.d-skript ```/etc/init.d/cicd-lab
 
 ##Stretch goals
 
+### Hantera artifakter m.h.a. Nexus
+
+Istället för att kopiera runt artifakter mellan olika Jenkinsjobb kan man hantera byggartifakter på ett mer ordnat sätt m.h.a. en repository manager. På ci-maskinen finns Nexus installerad för detta ändamål. Processen med Nexus blir att man låter byggjobben vid ett lyckat bygge ladda upp den artfakt som byggts till Nexus och att sedan deployjobben hämtar den artifakt som ska deployas från Nexus. Nexus hjälper till med att arkivera byggda artifakter och underlättar distributionen.
+
+Backendapplikationens artifakt kan laddas upp till Nexus m.h.a. Maven:
+
+```bash
+mvn deploy:deploy-file \  
+-DgroupId=se.omegapoint \  
+-DartifactId=cicd-lab-backend \  
+-Dversion=1.0.${BUILD_NUMBER} \  
+-Dpackaging=jar \  
+-Dfile=/var/lib/jenkins/jobs/backend-build-nexus/builds/${BUILD_NUMBER}/archive/target/cicd-lab-backend-1.0.${BUILD_NUMBER}.jar \  
+-DrepositoryId=deployment \  
+-Durl=http://192.168.33.10:8081/nexus/content/repositories/releases \  
+--settings=/var/lib/jenkins/.m2/settings.xml
+```
+
+Enklaste sättet att hämta artifakter från Nexus är att ladda ner dem med curl eller wget. Exempel med curl: ```curl -O http://192.168.33.10:8081/nexus/service/local/repositories/releases/content/se/omegapoint/cicd-lab-backend/1.0.${PROMOTED_BUILD_NUMBER}/cicd-lab-backend-1.0.${PROMOTED_BUILD_NUMBER}.jar -o /opt/cicd-lab-backend```
+
+### Deploy m.h.a. Ansible
+
 Deployprocesserna ovan består i att man från Jenknis med små bashscript distribuerar ut och startar artifakter. Ett bättre sätt att hantera deploy på är att använda sig utav ett verktyg som är till för att underlätta just driftsättning. Ett förslag är att använda sig av Ansible, http://ansible.com/, som abstraherar bort allt ssh:ande och har en enkel yaml-syntax för att beskriva en deployprocess. Genom att inte ha deployprocessen beskriven direkt i Jenkinsjobben öppnar också upp möjligheten till att versionshantera deployskripten och deploykonfigurationen vilket alltid är att föredra. Ansible finns redan installerat på ci-maskinen och det finns också ett git-repo på samma maskin, ```git@192.168.33.10:cicd-lab-ansible.git```, med ett skelett för att komma igång med Ansible. 
 
+### Sonar och statisk kodanalys
+
 På ci-maskinen finns det en sonarserver som kan användas för att lägga till ett byggsteg som granskar en applikations kodkvalitet. Mer information om Sonar och hur man kan integrera Sonar med Jenkins finns här: http://docs.sonarqube.org/display/SONAR/Documentation.
+
+### Promoted Builds Plugin
 
 För att få bättre spårbarhet och kontroll över vilka byggen som är okej att tas till produktion kan man använda sig utav Jenkins Promoted Builds Plugin: https://wiki.jenkins-ci.org/display/JENKINS/Promoted+Builds+Plugin
 
