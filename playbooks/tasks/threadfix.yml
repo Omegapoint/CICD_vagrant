@@ -1,0 +1,29 @@
+---
+- name: Install packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - tomcat7
+  - mariadb-server
+  - libmysqlclient-dev
+  - python-dev
+
+- name: Configure Tomcat 7
+  lineinfile: dest=/var/lib/tomcat7/conf/server.xml regexp='Connector port="8080"' line='    <Connector port="9080" protocol="HTTP/1.1"'
+
+- name: Install ThreadFix package
+  apt: deb=/vagrant/ThreadFix-2.2.3-Community.deb
+
+- name: Create ThreadFix workdir
+  file: path=/var/lib/threadfix/tfscratch state=directory owner=tomcat7 group=tomcat7 mode=755 recurse=yes
+
+- name: Restart Tomcat 7
+  service: name=tomcat7 state=started
+
+- name: MySQL connector for Ansible
+  pip: name=MySQL-python
+
+- name: Create ThreadFix database
+  mysql_db: login_user=root login_password= name=threadfix state=present
+
+- name: Create database user
+  mysql_user: login_user=root login_password= name=tf-user password=tf-password priv=threadfix.*:ALL

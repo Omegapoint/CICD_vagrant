@@ -7,6 +7,10 @@
         - { role: adham.helal.nexus }
         - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl, delivery-pipeline-plugin] }
   tasks:
+        - include: tasks/zap.yml
+
+        - include: tasks/threadfix.yml
+
         - name: set java 8 default
           shell: update-java-alternatives -s java-8-oracle
 
@@ -65,8 +69,6 @@
         - name: add git "server" user
           user: name=git
 
-        - include: tasks/zap.yml
-
 
 
 # normally we would use lookup, but there seems to be a bug
@@ -98,6 +100,11 @@
           sudo: yes
           sudo_user: git
           git: repo=https://github.com/jakobkylberg/cicd-lab-ansible.git bare=yes dest=/home/git/cicd-lab-ansible.git
+
+        - name: clone bodgeit-maven project
+          sudo: yes
+          sudo_user: git
+          git: repo=https://github.com/AlbanAndrieu/bodgeit-maven.git bare=yes dest=/home/git/bodgeit-maven.git
 
         - name: ensure jenkins knows git server
           lineinfile: >
