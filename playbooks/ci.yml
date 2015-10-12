@@ -36,7 +36,7 @@
 
         - name: install fpm
           sudo_user: vagrant
-          command: bash -lc "sudo gem install fpm"
+          gem: name=fpm
 
         - name: run dos2unix on shared files
           command: /usr/bin/find /vagrant -type f -print0 -exec /usr/bin/dos2unix {} \;
@@ -64,6 +64,22 @@
 
         - name: add git "server" user
           user: name=git
+
+        - name: install ZAP init script
+          copy: src=../init.d-zaproxy.sh dest=/etc/init.d/zaproxy mode=0755
+
+        - name: install ZAP |
+          shell: |
+            tar -xzvf /vagrant/ZAP_2.4.2_Linux.tar.gz -C /opt creates=/opt/ZAP_2.4.2
+            update-rc.d zaproxy defaults
+            service zaproxy start
+
+        - name: install Python package manager
+          apt: pkg=python-pip state=installed
+
+        - name: install ZAP Python API
+          pip: name=python-owasp-zap-v2.4
+
 
 # normally we would use lookup, but there seems to be a bug
         - name: read public keys

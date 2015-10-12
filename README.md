@@ -1,4 +1,6 @@
-#CI/CD - Skapa din egen byggpipeline
+#AppSäk i din CI/CD-setup
+
+Omegapoint Academy Day Training
 
 ##Förberedelser
 
