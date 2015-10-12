@@ -37,3 +37,16 @@
 
         - name: set authorized keys
           authorized_key: user=jenkins key="{{publickey.stdout}}" manage_dir=yes
+
+        - name: Install Tomcat7
+          apt: pkg=tomcat7
+
+        - name: Configure Tomcat7 port
+          lineinfile: dest=/var/lib/tomcat7/conf/server.xml regexp='Connector port="8080"' line='    <Connector port="9080" protocol="HTTP/1.1"'
+
+        - name: Configure Tomca7 JAVA_HOME
+          lineinfile: dest=/etc/default/tomcat7 regexp='#JAVA_HOME' line='JAVA_HOME=/usr/lib/jvm/java-8-oracle/'
+
+        - name: Start Tomcat7
+          service: name=tomcat7 state=started
+

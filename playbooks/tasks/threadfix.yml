@@ -1,5 +1,5 @@
 ---
-- name: Install packages
+- name: Install packages needed for TheadFix
   apt: pkg={{ item }} state=installed
   with_items:
   - tomcat7
@@ -9,15 +9,20 @@
 
 - name: Configure Tomcat 7
   lineinfile: dest=/var/lib/tomcat7/conf/server.xml regexp='Connector port="8080"' line='    <Connector port="9080" protocol="HTTP/1.1"'
+  lineinfile: dest=/etc/default/tomcat7 regexp='#JAVA_HOME' line='JAVA_HOME=/usr/lib/jvm/java-8-oracle/'
+
+- name: Download ThreadFix community
+  get_url: url=https://www.dropbox.com/s/aqpsmibwp6737ap/ThreadFix-2.2.3-Community.deb?dl=0 dest=/vagrant/ThreadFix-2.2.3-Community.deb
 
 - name: Install ThreadFix package
-  apt: deb=/vagrant/ThreadFix-2.2.3-Community.deb
+  #apt: deb=/vagrant/ThreadFix-2.2.3-Community.deb dpkg_options='force-confold,force-confdef'
+  shell: sudo DEBIAN_FRONTEND=noninteractive dpkg -i /vagrant/ThreadFix-2.2.3-Community.deb
+
+- name: Fix threadfix config
+  shell: dpkg-reconfigure -f noninteractive threadfix
 
 - name: Create ThreadFix workdir
   file: path=/var/lib/threadfix/tfscratch state=directory owner=tomcat7 group=tomcat7 mode=755 recurse=yes
-
-- name: Restart Tomcat 7
-  service: name=tomcat7 state=started
 
 - name: MySQL connector for Ansible
   pip: name=MySQL-python
@@ -27,3 +32,19 @@
 
 - name: Create database user
   mysql_user: login_user=root login_password= name=tf-user password=tf-password priv=threadfix.*:ALL
+
+- name: Configure ThreadFix for MySQL
+  copy: src=../../threadfix-jdbc.properties dest=/usr/share/threadfix/threadfix/WEB-INF/classes/jdbc.properties
+
+- name: Recreate ThreadFix database
+  shell: service tomcat7 restart
+
+- name: Wait for ThreadFix database to be fully created
+  wait_for: path=/var/log/tomcat7/threadfix-app-log.log search_regex='batch acquisition of 0 triggers'
+
+- name: Set ThreadFix to standard operation
+  lineinfile: dest=/usr/share/threadfix/threadfix/WEB-INF/classes/jdbc.properties regexp='hibernate.hbm2ddl.auto=create' line='hibernate.hbm2ddl.auto=update'
+
+- name: Restart Tomcat 7
+  service: name=tomcat7 state=started
+
