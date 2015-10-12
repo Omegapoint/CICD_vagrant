@@ -12,3 +12,8 @@ $ git checkout appsec
 $ git pull
 $ vagrant provision ci test
 ```
+
+## Miljö
+* Jenkins: http://192.168.33.10:8080
+* ThreadFix: http://192.168.33.10:9080/threadfix/login.jsp
+* ZAP: http://127.0.0.1:12345 (från CI-maskinen)
