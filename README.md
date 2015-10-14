@@ -5,20 +5,14 @@
 ### Installera verktyg - OSX
 1. [Installera homebrew](http://brew.sh/)
 	`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-2. Installera git
-	`brew install git`
-3. Installera ssh
-	`brew install ssh`
-4. Installera virualbox
-	`brew cask install virtualbox`
-5. Installera vagrant
-	`brew cask install vagrant`
-	`brew cask install vagrant-manager`
-5. Installera paketet och starta om datorn
-6. Installera python 2.7.
-	`brew install python`
-7. Installera ansible
-	`brew install ansible`
+2. `brew install git`
+3. `brew install ssh`
+4. `brew cask install virtualbox`
+5. `brew cask install vagrant`
+6. `brew cask install vagrant-manager`
+7. `brew install python`
+8. `brew install ansible`
+9. Omstart (vid behov)
 
 ### Installera verktyg - Windows
 To be documented - Du som har en windowsmaskin - fyll ut denna instruktion
