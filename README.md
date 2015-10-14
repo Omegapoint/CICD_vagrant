@@ -2,7 +2,7 @@
 
 ##Förberedelser
 
-### OSX
+### Installera verktyg - OSX
 1. [Installera homebrew](http://brew.sh/)
 	`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Installera git
@@ -15,19 +15,31 @@
 	`brew cask install vagrant`
 	`brew cask install vagrant-manager`
 5. Installera paketet och starta om datorn
-6. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
-
-```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
-
-7. Installera python 2.7.
+6. Installera python 2.7.
 	`brew install python`
-8. Installera ansible
+7. Installera ansible
 	`brew install ansible`
 
-9. Kör ```vagrant up``` i den klonade projektkatalogen.
+### Installera verktyg - Windows
+To be documented - Du som har en windowsmaskin - fyll ut denna instruktion
+- cygwin? vilka paket skall man ha?
+- virtual box
+- python
+- ansible
+- vagrant
+
+### Installera verktyg - Linux
+To be documented - Du som har en linuxmaskin - fyll ut denna instruktion
+
+### Sätt upp miljö
+
+1. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
+```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
+
+2. Kör ```vagrant up``` i den klonade projektkatalogen.
  - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
 
-10. Vänta (kan ta upp emot 45 min)
+3. Vänta (kan ta upp emot 45 min)
 
 Ibland kan ett enskilt steg i provisionering fallera pga exv att en nedladdning timear ut. I så fall kan man köra om provisioneringen med ```vagrant reload --provision <maskinnamn>````. Delar av provisionering som har lyckats kommer då inte att köras om.
 
