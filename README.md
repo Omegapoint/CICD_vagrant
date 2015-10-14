@@ -45,9 +45,9 @@ $ vagrant provision ci test
 
 ```
 # Lista applikationer
-$ curl -H 'Accept: application/json'  http://localhost:9080/threadfix/rest/teams?apiKey=EmMnywKGQaq3aXnsefIyQvwfvTppnYEccOkVrcc88 | jq .
+$ curl -H 'Accept: application/json'  http://ci:9080/threadfix/rest/teams?apiKey=EmMnywKGQaq3aXnsefIyQvwfvTppnYEccOkVrcc88 | jq .
 
 # Ladda upp en scanning
-$ 
+$ curl --insecure -H 'Accept: application/json' -X POST --form file=@target/findbugsXml.xml http://ci:9080/threadfix/rest/applications/2/upload?apiKey=EmMnywKGQaq3aXnsefIyQvwfvTppnYEccOkVrcc88
 ```
 
