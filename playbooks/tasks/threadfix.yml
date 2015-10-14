@@ -6,6 +6,7 @@
   - mariadb-server
   - libmysqlclient-dev
   - python-dev
+  - jq
 
 - name: Configure Tomcat 7
   lineinfile: dest=/var/lib/tomcat7/conf/server.xml regexp='Connector port="8080"' line='    <Connector port="9080" protocol="HTTP/1.1"'

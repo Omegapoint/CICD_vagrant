@@ -11,6 +11,9 @@
 
         - include: tasks/threadfix.yml
 
+        - name: setup hosts file
+          lineinfile: dest=/etc/hosts regexp='^192\.168\.33\.20' line='192.168.33.20 test' owner=root group=root mode=0644
+
         - name: set java 8 default
           shell: update-java-alternatives -s java-8-oracle
 
@@ -105,6 +108,11 @@
           sudo: yes
           sudo_user: git
           git: repo=https://github.com/AlbanAndrieu/bodgeit-maven.git bare=yes dest=/home/git/bodgeit-maven.git
+
+        - name: clone WebGoat-Legacy project
+          sudo: yes
+          sudo_user: git
+          git: repo=https://github.com/WebGoat/WebGoat-Legacy.git bare=yes dest=/home/git/WebGoat-Legacy.git
 
         - name: ensure jenkins knows git server
           lineinfile: >

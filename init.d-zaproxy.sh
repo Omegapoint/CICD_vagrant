@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="/opt/ZAP_2.4.2"
-cmd="java -jar zap-2.4.2.jar -daemon -port 12345"
+cmd="java -jar zap-2.4.2.jar -daemon -port 12345 -config api.disablekey=true"
 user="root"
 
 name=`basename $0`
