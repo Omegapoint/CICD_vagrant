@@ -13,7 +13,7 @@
   lineinfile: dest=/etc/default/tomcat7 regexp='#JAVA_HOME' line='JAVA_HOME=/usr/lib/jvm/java-8-oracle/'
 
 - name: Download ThreadFix community
-  get_url: url=https://www.dropbox.com/s/aqpsmibwp6737ap/ThreadFix-2.2.3-Community.deb?dl=0 dest=/vagrant/ThreadFix-2.2.3-Community.deb
+  get_url: url=https://www.dropbox.com/s/aqpsmibwp6737ap/ThreadFix-2.2.3-Community.deb?dl=1 dest=/vagrant/ThreadFix-2.2.3-Community.deb
 
 - name: Install ThreadFix package
   #apt: deb=/vagrant/ThreadFix-2.2.3-Community.deb dpkg_options='force-confold,force-confdef'
