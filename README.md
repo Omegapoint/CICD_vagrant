@@ -21,4 +21,33 @@ $ vagrant provision ci test
 * ZAP: http://127.0.0.1:12345 (från CI-maskinen)
 
 ### TEST: 192.168.33.20
-* Tomcat7: http://192.168.33.20:9080 (För att köra Bodgeit Store)
+* Tomcat7: http://192.168.33.20:9080 (För att köra WebGoat)
+
+## Tips till laborationerna
+
+### WebGoat
+* Git-repo: git@ci:WebGoat-Legacy.git
+* Bygga: mvn clean package
+
+### Deploy till TEST
+* Fixa SSH från jenkins@ci -> root@test (lägg till ~jenkins/.ssh/id-rsa.pub i slutet av /root/.ssh/authorized_keys)
+* Kopiera WebGoat-6.0.1.war i /var/lib/tomcat7/webapps/webgoat.war mha. scp
+* Starta om Tomcat på test: ssh root@test service tomcat7 restart
+* Kolla att WebGoat kommer upp: wget -O /dev/null --retry-connrefused --tries 5 http://192.168.33.20:9080/webgoat
+
+### Findbugs
+* FindBugs och FindSecurityBugs: https://github.com/h3xstream/find-sec-bugs/wiki/Maven-configuration
+
+### ZAP
+* För att installera lokalt: https://github.com/zaproxy/zaproxy/wiki/Downloads
+
+### ThreadFix
+
+```
+# Lista applikationer
+$ curl -H 'Accept: application/json'  http://localhost:9080/threadfix/rest/teams?apiKey=EmMnywKGQaq3aXnsefIyQvwfvTppnYEccOkVrcc88 | jq .
+
+# Ladda upp en scanning
+$ 
+```
+
