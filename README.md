@@ -2,24 +2,32 @@
 
 ##Förberedelser
 
-1. Installera git och ssh
- - Windows: https://msysgit.github.io/ Välj förvalda alternativ
- - Mac OS: Använd ‘port’ (https://www.macports.org/), ‘fink’ (http://www.finkproject.org/) eller någon annan väg
-2. Ladda ner och installera VirtualBox (https://www.virtualbox.org)
-3. Gå till https://www.vagrantup.com/ och ladda ner respektive installationspaket för din dator.
-4. Installera paketet och starta om datorn
-5. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
+### OSX
+1. [Installera homebrew](http://brew.sh/)
+	`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+2. Installera git
+	`brew install git`
+3. Installera ssh
+	`brew install ssh`
+4. Installera virualbox
+	`brew cask install virtualbox`
+5. Installera vagrant
+	`brew cask install vagrant`
+	`brew cask install vagrant-manager`
+5. Installera paketet och starta om datorn
+6. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
 
 ```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
 
-6. Installera python 2.6 eller 2.7 och pip.
-7. Installera ansible
-   ```sudo pip install ansible```
+7. Installera python 2.7.
+	`brew install python`
+8. Installera ansible
+	`brew install ansible`
 
-8. Kör ```vagrant up``` i den klonade projektkatalogen.
+9. Kör ```vagrant up``` i den klonade projektkatalogen.
  - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
 
-9. Vänta (kan ta upp emot 45 min)
+10. Vänta (kan ta upp emot 45 min)
 
 Ibland kan ett enskilt steg i provisionering fallera pga exv att en nedladdning timear ut. I så fall kan man köra om provisioneringen med ```vagrant reload --provision <maskinnamn>````. Delar av provisionering som har lyckats kommer då inte att köras om.
 
