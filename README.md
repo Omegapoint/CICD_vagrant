@@ -174,8 +174,7 @@ Jobben ska inledningsvis checka ut koden från git, köra enhetstester och sedan
 Backendjobbet ska konfigureras som ett maven projekt, medan frontend applikationen ska konfigureras som ett free-style projekt.
 
 ###Del 2 - Konfigurera git och jenkins
-Börja med att följa instruktionerna från readme filen angående git och git projekten. När du checkat ut koden för applikationerna så ska du konfigurera git så att en incheckning notifierar jenkins att köra ett bygge. Vi vill alltså inte använda en pull-teknik där jenkins enligt något tidsintervall kollar om något förändrats i git-repot.
-Vi kan göra detta genom att lägga till en git-hook, vi vill notifiera jenkins om att något har förändrats efter en push till origin. 
+Börja med att följa instruktionerna angående git och git-projekten. Det finns två metoder, den enklaste är att man låter Jenkins polla git-repot efter ändringar och den lite mer komplicerade men snyggare är att konfigurera git så att en incheckning notifierar jenkins att köra ett bygge. För att få git-repot att notifiera Jenkins kan man lägga till en git-hook, som triggas om något har förändrats efter en push till origin. 
 Utför följande steg:
 
 I Jenkinsjobben, checka i “poll SCM”, men utelämna tidsinställningarna. Testa att jenkins svarar på följande GET-anrop: http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>
