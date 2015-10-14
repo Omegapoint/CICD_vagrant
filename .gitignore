@@ -17,3 +17,5 @@ hs_err_pid*
 .idea/
 keys/
 jenkins_keys
+/cicd-lab-backend
+/cicd-lab-frontend
