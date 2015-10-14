@@ -179,7 +179,10 @@ Utför följande steg:
 
 I Jenkinsjobben, checka i “poll SCM”, men utelämna tidsinställningarna. Testa att jenkins svarar på följande GET-anrop: http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>
 För bägge applikationerna, lägg in följande script i en fil med namnet post-receive. Den ska ligga i hooks katalogen för respektive repo på ci boxen: 
-```#!/bin/sh curl http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>```
+```bash
+#!/bin/sh 
+curl http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>
+```
 Sätt ägare på filen och gör den exekverbar genom: ```sudo chown git:git post-receive```, ```sudo chmod +x post-receive``` Verifiera att push-tekniken fungerar genom att i host-miljön checka ut applikationerna, gör en förändring i någon fil och pusha förändringarna till git servern. Då ska ett nytt bygge exekveras på jenkinsservern.
 
 ###Del 3 - Testautomatisering
