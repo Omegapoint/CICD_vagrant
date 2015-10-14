@@ -4,7 +4,9 @@
 
 ### Installera verktyg - OSX
 1. [Installera homebrew](http://brew.sh/)
-	`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+	```ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"```
+
 2. `brew install git`
 3. `brew install ssh`
 4. `brew cask install virtualbox`
@@ -28,6 +30,7 @@ To be documented - Du som har en linuxmaskin - fyll ut denna instruktion
 ### Sätt upp miljö
 
 1. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
+
 ```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
 
 2. Kör ```vagrant up``` i den klonade projektkatalogen.
