@@ -200,12 +200,14 @@ Utför följande steg:
 2. Skapa ett deployjobb som kopierar artefakter från ett annat projekt, välj det jobb som du tidigare jobbat med.
 3. Sätt upp en sträng parameter till jobbet, denna parameter kommer innehålla byggnummret för artefakten som ska skapas och installeras.
 4. Skriv ett shellscript i bygget som utför följande (exempel frontendapp):
-```cd dist```
+```cd dist``` följt av
 ```fpm -s dir -t rpm -n mc-angular -v 1.0.${Param} --verbose --directories mc-angular --category op/application  --description "Angular-applikation mc-angular"  --rpm-user vagrant --rpm-group vagrant --rpm-defattrfile 644 --rpm-defattrdir 755 --prefix /var/www/html mc-angular```
 5. Skicka filen till testmiljön genom: ```rsync -v -e ssh "mc-angular-1.0."${Param}"-1.x86_64.rpm" jenkins@192.168.33.20:~```
 6. Skapa en ssh-inloggning mot testmiljön med ssh plugin och kör följande script: 
-```cd /home/jenkins``` 
-```rpm -ivh "mc-angular-1.0."${Param}"-1.x86_64.rpm"```
+```bash
+cd /home/jenkins
+rpm -ivh "mc-angular-1.0."${Param}"-1.x86_64.rpm"
+```
 
 ####Backendapplikationen
 Det enklaste sättet är att deploya applikationen är som följer:
