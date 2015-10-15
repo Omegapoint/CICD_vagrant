@@ -39,6 +39,7 @@ $ vagrant provision ci test
 * FindBugs och FindSecurityBugs: https://github.com/h3xstream/find-sec-bugs/wiki/Maven-configuration
 
 ### ZAP
+* API-dokumentation: https://github.com/zaproxy/zaproxy/wiki/ApiPython
 * För att installera lokalt: https://github.com/zaproxy/zaproxy/wiki/Downloads
 
 ### ThreadFix
