@@ -42,7 +42,7 @@ $ vagrant provision ci test
 * För att installera lokalt: https://github.com/zaproxy/zaproxy/wiki/Downloads
 
 ### ThreadFix
-
+* API-dokumentation: https://github.com/denimgroup/threadfix/wiki/Threadfix-REST-Interface
 ```
 # Lista applikationer
 $ curl -H 'Accept: application/json'  http://ci:9080/threadfix/rest/teams?apiKey=EmMnywKGQaq3aXnsefIyQvwfvTppnYEccOkVrcc88 | jq .
