@@ -39,10 +39,11 @@ $ vagrant provision ci test
 * FindBugs och FindSecurityBugs: https://github.com/h3xstream/find-sec-bugs/wiki/Maven-configuration
 
 ### ZAP
+* API-dokumentation: https://github.com/zaproxy/zaproxy/wiki/ApiPython
 * För att installera lokalt: https://github.com/zaproxy/zaproxy/wiki/Downloads
 
 ### ThreadFix
-
+* API-dokumentation: https://github.com/denimgroup/threadfix/wiki/Threadfix-REST-Interface
 ```
 # Lista applikationer
 $ curl -H 'Accept: application/json'  http://ci:9080/threadfix/rest/teams?apiKey=EmMnywKGQaq3aXnsefIyQvwfvTppnYEccOkVrcc88 | jq .
