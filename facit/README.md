@@ -188,7 +188,7 @@ Three jobs are suggested:
 
 An example of a pipeline is shown below using the Delivery Pipeline plugin
 
-# IMAGE HERE
+![Backend Pipeline][backend-pipeline img]
 
 
 ### Backend
@@ -236,3 +236,5 @@ ssh 192.168.33.20 "(cd /opt/cicd-lab-backend; service cicd-lab-backend.sh start)
 ```
 
 ## Copyright Omegapoint 2016
+
+[backend-pipeline img]:backend-pipeline.jpg
