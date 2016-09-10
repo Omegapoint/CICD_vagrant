@@ -4,7 +4,7 @@
   sudo: True
   roles:
         - { role: ansible-java8-oracle }
-        - { role: adham.helal.nexus }
+        #- { role: adham.helal.nexus }
         - { role: geerlingguy.jenkins, jenkins_plugins: [scm-api, git-client, git, nodejs, build-pipeline-plugin, jquery, promoted-builds, parameterized-trigger, copyartifact, job-dsl, delivery-pipeline-plugin] }
   tasks:
         - name: set java 8 default
