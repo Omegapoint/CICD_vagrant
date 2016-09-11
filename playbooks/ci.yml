@@ -83,16 +83,17 @@
         - name: clone git projects frontend
           sudo: yes
           sudo_user: git
-          git: repo=https://github.com/jakobkylberg/ci-frontendApp.git bare=yes dest=/home/git/ci-frontendApp.git
+          git: repo=https://github.com/Omegapoint/cicd-workshop-frontend.git bare=yes dest=/home/git/cicd-workshop-frontend.git
 
         - name: clone git projects backend
           sudo: yes
           sudo_user: git
-          git: repo=https://github.com/jakobkylberg/cicd-lab-backend.git bare=yes dest=/home/git/cicd-lab-backend.git
+          git: repo=https://github.com/Omegapoint/cicd-workshop-backend.git bare=yes dest=/home/git/cicd-workshop-backend.git
 
         - name: clone ansible project
           sudo: yes
           sudo_user: git
+          # TODO: Migrate repo to Omegapoint account
           git: repo=https://github.com/jakobkylberg/cicd-lab-ansible.git bare=yes dest=/home/git/cicd-lab-ansible.git
 
         - name: ensure jenkins knows git server
