@@ -1,5 +1,6 @@
 #!/bin/bash
-JARFile="/opt/cicd-lab-backend/cicd-lab-backend-*.jar"
+JARFile="cicd-lab-backend-*.jar"
+WORK_DIR="/opt/cicd-lab-backend/"
 PIDFile="app.pid"
 PID="-1"
 NOPID="-1"
@@ -78,7 +79,7 @@ start)
     echo "Process already running"
     exit 1
   fi
-  nohup java -jar $JARFile >/dev/null 2>&1 &
+  (cd $WORK_DIR; nohup java -jar $JARFile >/dev/null 2>&1 &)
   echo "Process started"
 ;;
 
@@ -88,7 +89,7 @@ debug)
     echo "Process already running"
     exit 0
   fi
-  nohup java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n -jar $JARFile >/dev/null 2>&1 &
+  (cd $WORK_DIR; nohup java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n -jar $JARFile >/dev/null 2>&1 &)
 
   echo "Process started"
 ;;
