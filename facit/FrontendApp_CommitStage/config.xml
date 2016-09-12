@@ -14,7 +14,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>git@192.168.33.10:ci-frontendApp.git</url>
+        <url>git@192.168.33.10:cicd-workshop-frontend.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>

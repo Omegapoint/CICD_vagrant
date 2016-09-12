@@ -107,12 +107,12 @@ mvn clean package
 
 ###### Unpack to catalog
 ```sh
-tar xzvf target/cicd-lab-backend-1.0-bin.tar.gz -C ~
+tar xzvf target/cicd-workshop-backend-1.0-bin.tar.gz -C ~
 ```
 
 ###### Start application
 ```sh
-cd ~/cicd-lab-backend-1.0 && ./application.sh start
+cd ~/cicd-workshop-backend-1.0 && ./application.sh start
 ```
 
 ###### application.sh has the ability to start, stop and show status for the application
@@ -122,10 +122,10 @@ application.sh [start|stop|restart|debug|status]
 
 ###### The test and prod virtual machine has a init.d scription which can start and stop the backend service
 ```sh
-service cicd-lab-backend.sh [start|stop]
+service cicd-workshop-backend.sh [start|stop]
 ```
 ###### This simplifies the update process, as only the jar needs to be fetched from Nexus.
-> In order for the service script to work, the script cicd-lab-backend.sh must be available in /etc/init.d/ If not present, check if existing in /vagrant/ and move to /etc/init.d (see bootstrap_test/prod.sh)
+> In order for the service script to work, the script cicd-workshop-backend.sh must be available in /etc/init.d/ If not present, check if existing in /vagrant/ and move to /etc/init.d (see bootstrap_test/prod.sh)
 
 #### Frontend
 The frontend application is written in Javascript with AngularJS. The application is build using Node/Grunt and tested using Karma/Jasmine As the frontend consists only of static content, it can be served using an Apache web server which is installed on both the test and prod virtual machine.  
@@ -197,11 +197,11 @@ Jenkins is available at http://192.168.33.10:8080
 
 #### Test job
 1. Create new **Maven project** job in Jenkins, name it test_backend or similiar
-2. Source code management, enter git repo: **git@192.168.33.10:cicd-lab-backend.git**
+2. Source code management, enter git repo: **git@192.168.33.10:cicd-workshop-backend.git**
 3. Build triggers, check **Poll SCM** and enter '* * * * *' without quotes. This will make Jenkins check the repo every minute for changes
 4. Build, Add **clean install -Dversion=1.0.${BUILD_NUMBER}** to Goals and options
 5. Build settings check **Email notification** and check only option **Send separate e-mails to individuals who broke the build**
-6. Post build **Archive artifacts target/cicd-lab-backend-*****.jar**
+6. Post build **Archive artifacts target/cicd-workshop-backend-*****.jar**
 7. Post build, publish Junit result, files: target/surefire-reports/**. Can be found by looking in 'workspace' on jenkins
 8. (Trigger next with predefined **BuildId=${BUILD_NUMBER}**)
 
@@ -215,10 +215,10 @@ Jenkins is available at http://192.168.33.10:8080
 ```sh
 mvn deploy:deploy-file \
 -DgroupId=se.omegapoint \
--DartifactId=cicd-lab-backend \
+-DartifactId=cicd-workshop-backend \
 -Dversion=1.0.${BuildId} \
 -Dpackaging=jar \
--Dfile=target/cicd-lab-backend-1.0.${BuildId}.jar \
+-Dfile=target/cicd-workshop-backend-1.0.${BuildId}.jar \
 -DrepositoryId=deployment \
 -Durl=http://192.168.33.10:8081/nexus/content/repositories/releases \
 --settings=/var/lib/jenkins/.m2/settings.xml
@@ -230,11 +230,11 @@ mvn deploy:deploy-file \
 3. Add parameter **String** parameter. Set name to **BuildId**
 4. Build, Add **shell step**
 ```sh
-ssh 192.168.33.20 "service cicd-lab-backend.sh stop"
+ssh 192.168.33.20 "service cicd-workshop-backend.sh stop"
 sleep 1
-wget --content-disposition -q -O /tmp/cicd-lab-backend-1.0.${BuildId}.jar "http://192.168.33.10:8081/nexus/service/local/artifact/maven/redirect?r=releases&g=se.omegapoint&a=cicd-lab-backend&v=1.0.${BuildId}&e=jar"
-rsync /tmp/cicd-lab-backend-1.0.${BuildId}.jar 192.168.33.20:/opt/cicd-lab-backend/
-ssh 192.168.33.20 "(cd /opt/cicd-lab-backend; service cicd-lab-backend.sh start)"
+wget --content-disposition -q -O /tmp/cicd-workshop-backend-1.0.${BuildId}.jar "http://192.168.33.10:8081/nexus/service/local/artifact/maven/redirect?r=releases&g=se.omegapoint&a=cicd-workshop-backend&v=1.0.${BuildId}&e=jar"
+rsync /tmp/cicd-workshop-backend-1.0.${BuildId}.jar 192.168.33.20:/opt/cicd-workshop-backend/
+ssh 192.168.33.20 "(cd /opt/cicd-workshop-backend; service cicd-workshop-backend.sh start)"
 ```
 
 ## Copyright Omegapoint 2016

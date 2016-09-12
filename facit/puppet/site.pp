@@ -6,23 +6,23 @@ class { 'nexus':
 
 define backend_app($version) {
 
-  file { "/opt/cicd-lab-backend":
+  file { "/opt/cicd-workshop-backend":
     ensure => "directory"
   } ->
   exec { 'stop-app':
-    command => '/usr/sbin/service cicd-lab-backend.sh stop'
+    command => '/usr/sbin/service cicd-workshop-backend.sh stop'
   } ->
   exec { 'clean dir':
-    command => '/usr/bin/find /opt/cicd-lab-backend -name "*.jar" -exec rm -f {} \;'
+    command => '/usr/bin/find /opt/cicd-workshop-backend -name "*.jar" -exec rm -f {} \;'
   } ->
-  nexus::artifact { 'cicd-lab-backend':
-    gav        => "se.omegapoint:cicd-lab-backend:${version}",
+  nexus::artifact { 'cicd-workshop-backend':
+    gav        => "se.omegapoint:cicd-workshop-backend:${version}",
     repository => "public",
-    output     => "/opt/cicd-lab-backend/cicd-lab-backend-${version}.jar",
+    output     => "/opt/cicd-workshop-backend/cicd-workshop-backend-${version}.jar",
     ensure     => "update"
   } ->
   exec { 'start-app':
-    command => '/usr/sbin/service cicd-lab-backend.sh start'
+    command => '/usr/sbin/service cicd-workshop-backend.sh start'
   }
 }
 
@@ -43,7 +43,7 @@ define frontend_app($version) {
 
 node 'default' {
 
-  $backend_version = hiera("cicd-lab-backend_version")
+  $backend_version = hiera("cicd-workshop-backend_version")
   $frontend_version = hiera("cicd-lab-frontend_version")
 
   backend_app { 'backend_app':

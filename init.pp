@@ -5,9 +5,9 @@ class backendApp {
 		password => "admin123"
 	}
 
-	nexus::artifact {'cicd-lab-backend':
-		gav        => "se.omegapoint:cicd-lab-backend:1.0.119",
+	nexus::artifact {'cicd-workshop-backend':
+		gav        => "se.omegapoint:cicd-workshop-backend:1.0.119",
 		repository => "releases",
-		output     => "/opt/cicd-lab-backend/cicd-lab-backend-1.0.119.jar"
+		output     => "/opt/cicd-workshop-backend/cicd-workshop-backend-1.0.119.jar"
 	}
 }

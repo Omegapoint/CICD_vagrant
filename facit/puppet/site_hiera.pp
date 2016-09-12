@@ -1,8 +1,8 @@
 node 'default' {	
 	
-	$backend_version = hiera('cicd-lab-backend_version', 'LATEST')
+	$backend_version = hiera('cicd-workshop-backend_version', 'LATEST')
 	
-	$gav = "se.omegapoint:cicd-lab-backend:$backend_version"
+	$gav = "se.omegapoint:cicd-workshop-backend:$backend_version"
 	
 	notify{"The value is: ${gav}": }
 	
@@ -12,9 +12,9 @@ node 'default' {
 		password => "admin123"
 	}
 
-	nexus::artifact {'cicd-lab-backend':
+	nexus::artifact {'cicd-workshop-backend':
 		gav        => "${gav}",
 		repository => "public",
-		output     => "/opt/cicd-lab-backend/cicd-lab-backend-$backend_version.jar"
+		output     => "/opt/cicd-workshop-backend/cicd-workshop-backend-$backend_version.jar"
 	}
 }

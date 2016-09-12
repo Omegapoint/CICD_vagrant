@@ -72,9 +72,9 @@ Får du upp en lösenordsprompt är lösenordet till vagrant-användaren 'vagran
 
 De två applikationerna kan sedan klonas som vanligt:
 
-```$ git clone git@192.168.33.10:cicd-lab-backend.git```
+```$ git clone git@192.168.33.10:cicd-workshop-backend.git```
 
-```$ git clone git@192.168.33.10:ci-frontendApp.git```
+```$ git clone git@192.168.33.10:cicd-workshop-frontend.git```
 
 ###TEST-maskin
 
@@ -102,7 +102,7 @@ De två applikationerna kan sedan klonas som vanligt:
 
 Backendapplikationen är skriven i Java, använder sig utav Spring boot och har ett par enhetstester.
 
-Gitrepo: git@192.168.33.10:cicd-lab-backend.git
+Gitrepo: git@192.168.33.10:cicd-workshop-backend.git
 
  - Bygg:
 
@@ -110,17 +110,17 @@ Gitrepo: git@192.168.33.10:cicd-lab-backend.git
 
  - Packa upp tar.gz:en i lämplig katalog t.ex.:
 
-```$ tar xzvf target/cicd-lab-backend-1.0-bin.tar.gz -C ~```
+```$ tar xzvf target/cicd-workshop-backend-1.0-bin.tar.gz -C ~```
 
  - Starta applikationen:
 
-```$ cd ~/cicd-lab-backend-1.0 && ./application.sh start```
+```$ cd ~/cicd-workshop-backend-1.0 && ./application.sh start```
 
  - application.sh-skriptet kan bl.a. starta, stoppa och visa status:
 
 ```$ ./application.sh [start|stop|restart|debug|status]```
 
-På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-lab-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
+På test- och prodmaskinerna finns det ett init.d skript som kan starta och stoppa backendappen, ```service cicd-workshop-backend.sh [start|stop]```, vilket gör att det räcker att hämta ner fetjar:en från Nexus när en ny version ska ut.
 
 På windowsmaskiner kan man behöva ändra ```ps -p``` till ```ps p``` i application.sh-skriptet för att få det att fungera.
 
@@ -128,7 +128,7 @@ På windowsmaskiner kan man behöva ändra ```ps -p``` till ```ps p``` i applica
 
 Frontendapplikationen är byggd m.h.a. AngularJs och innehåller även ett par enhetstester. På både test- och prodmaskinen finns det en Apache webserver som kan användas när frontendapplikationen ska deployas.
 
-Gitrepo: git@192.168.33.10:ci-frontendApp.git
+Gitrepo: git@192.168.33.10:cicd-workshop-frontend.git
 
  - Installera först node, sedan:
 
@@ -221,7 +221,7 @@ Det enklaste sättet är att deploya applikationen är som följer:
  3. Kopiera (m.h.a. scp eller rsync) ut den nya artfakten till servern
  4. Starta applikationen på servern
 
-På test- och prodmaskinerna finns det ett init.d-skript ```/etc/init.d/cicd-lab-backend``` som kan starta och stoppa applikationen. Skriptet förutsätter att applikationens jar:er placeras i ```/opt/cicd-lab-backend```.
+På test- och prodmaskinerna finns det ett init.d-skript ```/etc/init.d/cicd-workshop-backend``` som kan starta och stoppa applikationen. Skriptet förutsätter att applikationens jar:er placeras i ```/opt/cicd-workshop-backend```.
 
 ##Stretch goals
 
@@ -234,16 +234,16 @@ Backendapplikationens artifakt kan laddas upp till Nexus m.h.a. Maven:
 ```bash
 mvn deploy:deploy-file \  
 -DgroupId=se.omegapoint \  
--DartifactId=cicd-lab-backend \  
+-DartifactId=cicd-workshop-backend \  
 -Dversion=1.0.${BUILD_NUMBER} \  
 -Dpackaging=jar \  
--Dfile=/var/lib/jenkins/jobs/backend-build-nexus/builds/${BUILD_NUMBER}/archive/target/cicd-lab-backend-1.0.${BUILD_NUMBER}.jar \  
+-Dfile=/var/lib/jenkins/jobs/backend-build-nexus/builds/${BUILD_NUMBER}/archive/target/cicd-workshop-backend-1.0.${BUILD_NUMBER}.jar \  
 -DrepositoryId=deployment \  
 -Durl=http://192.168.33.10:8081/nexus/content/repositories/releases \  
 --settings=/var/lib/jenkins/.m2/settings.xml
 ```
 
-Enklaste sättet att hämta artifakter från Nexus är att ladda ner dem med curl eller wget. Exempel med curl: ```curl -O http://192.168.33.10:8081/nexus/service/local/repositories/releases/content/se/omegapoint/cicd-lab-backend/1.0.${PROMOTED_BUILD_NUMBER}/cicd-lab-backend-1.0.${PROMOTED_BUILD_NUMBER}.jar -o /opt/cicd-lab-backend```
+Enklaste sättet att hämta artifakter från Nexus är att ladda ner dem med curl eller wget. Exempel med curl: ```curl -O http://192.168.33.10:8081/nexus/service/local/repositories/releases/content/se/omegapoint/cicd-workshop-backend/1.0.${PROMOTED_BUILD_NUMBER}/cicd-workshop-backend-1.0.${PROMOTED_BUILD_NUMBER}.jar -o /opt/cicd-workshop-backend```
 
 ### Deploy m.h.a. Ansible
 

@@ -23,7 +23,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;cicd-lab-backend_version: \&quot;1.0.${artifact_version}\&quot;&quot; &gt; /etc/puppet/hieradata/test.yaml</command>
+      <command>echo &quot;cicd-workshop-backend_version: \&quot;1.0.${artifact_version}\&quot;&quot; &gt; /etc/puppet/hieradata/test.yaml</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

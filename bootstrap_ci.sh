@@ -57,8 +57,8 @@ sudo -i -u git cat /vagrant/keys/id_rsa.pub > .ssh/authorized_keys
 #sudo -u git git init --bare
 
 # Clone the repositories for the frontend and backend application from github.com
-sudo -i -u git git clone --mirror https://github.com/jakobkylberg/cicd-lab-backend.git
-sudo -i -u git git clone --mirror https://github.com/jakobkylberg/ci-frontendApp.git
+sudo -i -u git git clone --mirror https://github.com/Omegapoint/cicd-workshop-backend.git
+sudo -i -u git git clone --mirror https://github.com/Omegapoint/cicd-workshop-frontend.git
 popd
 
 ## Install Artifactory
