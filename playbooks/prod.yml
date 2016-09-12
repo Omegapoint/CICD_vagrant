@@ -32,3 +32,11 @@
 
         - name: set authorized keys
           authorized_key: user=jenkins key="{{publickey.stdout}}" manage_dir=yes
+
+        - name: Create application folder /opt/cicd-lab-backend
+          file:
+            path: "/opt/cicd-lab-backend"
+            state: directory
+            owner: jenkins
+            group: jenkins
+            mode: 0775
