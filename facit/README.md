@@ -3,8 +3,9 @@
 <[StockholmConsultingMulticore@omegapoint.se](mailto:StockholmConsultingMulticore@omegapoint.se)>  
 *version 1.0, 2016-02*
 
-This is the main documentation for teachers holding the labs CI/CD course at Omegapoint. The lab consists of two parts, day1 and day2. Day 1 focuses on building an initial pipeline which includes automatic testing and deployment of the application
-The documentation mainly consists of cheat sheets and alternative ways of performing an operation.
+This is the main documentation for teachers holding the labs CI/CD course at Omegapoint. The lab consists of two parts, day1 and day2. 
+Day 1 focuses on building an initial pipeline which includes automatic testing and deployment of the application.
+This documentation mainly consists of cheat sheets and alternative ways of performing an operation.
 
 ## Overview
 The lab has three virtual machines, provisioned using vagrant. The application consists of separated backend and frontend applications, each with unit tests.
@@ -89,12 +90,12 @@ The backend has only one endpoint:
 "/Persons.json"
 ```
 
->The application has a filter (CORSFilter.java) which allows cross origin request, enabling the frondend application be completely standalone. Without this, both backend and frontend would have to be connected and always deployed at the same time.
+>The application has a filter (CORSFilter.java) which allows cross origin request, enabling the frontend application be completely standalone. Without this, both backend and frontend would have to be connected and always deployed at the same time.
 
 
 ###### Git repository
 ```sh
-git@192.168.33.10:cicd-lab-backend.git
+git@192.168.33.10:cicd-workshop-backend.git
 ```
 
 ###### Build
@@ -130,14 +131,14 @@ service cicd-lab-backend.sh [start|stop]
 The frontend application is written in Javascript with AngularJS. The application is build using Node/Grunt and tested using Karma/Jasmine As the frontend consists only of static content, it can be served using an Apache web server which is installed on both the test and prod virtual machine.  
 
 The application runs against a backend specified in config/settings.json. This file is different for each environment.
-You can immediatly test that the Apache server is serving content at
+You can immediately test that the Apache server is serving content at
 ```sh
 http://192.168.33.20
 ```
 
 ###### Git repository:
 ```sh
-git@192.168.33.10:ci-frontendApp.git
+git@192.168.33.10:cicd-workshop-frontend.git
 ```
 
 
@@ -149,21 +150,21 @@ npm install
 bower install
 ```
 
-##### Run application
+###### Run application
 ```sh
 grunt serve
 ```
-##### Run tests
+###### Run tests
 ```sh
 grunt test
 ```
 
-##### Build application (minimize etc.)
+###### Build application (minimize etc.)
 ```sh
 grunt build
 ```
 
-#### Specifying backend
+###### Specifying backend
 Create or update settings.json with the following content:
 ```json
 { "REST_ENDPOINT": "http://192.168.33.20:8080" }
@@ -181,7 +182,7 @@ The main goal with this lab is to create two working build pipelines, one for ba
 ### Overview
 Three jobs are suggested:
 * **test_[frontend/backend]**: Responsible for detecting changes in Git, fetching changes and running tests. Successful tests also packages the application
-* **publish_frontend_snapshot_to_nexus**: Middle step where all successful build packages are stored.
+* **publish_[frontend/backend]_snapshot_to_nexus**: Middle step where all successful build packages are stored.
 * **deploy_[frontend/backend]to_[test/prod]**: Deploys an artifact to test/prod environment
 
 > Do not use spaces in the job name. While Jenkins can handle it graphically, the underlying folder structure might not be optimal depending on operating system running Jenkins. There are other settings, such Display name etc. if pretty job names are wanted
@@ -197,11 +198,12 @@ Jenkins is available at http://192.168.33.10:8080
 #### Test job
 1. Create new **Maven project** job in Jenkins, name it test_backend or similiar
 2. Source code management, enter git repo: **git@192.168.33.10:cicd-lab-backend.git**
-3. Build triggers, check **Poll SCM** and enter 'H/5 * * * *' without quotes. This will make Jenkins check the repo every 5 minutes for changes
+3. Build triggers, check **Poll SCM** and enter '* * * * *' without quotes. This will make Jenkins check the repo every minute for changes
 4. Build, Add **clean install -Dversion=1.0.${BUILD_NUMBER}** to Goals and options
 5. Build settings check **Email notification** and check only option **Send separate e-mails to individuals who broke the build**
 6. Post build **Archive artifacts target/cicd-lab-backend-*****.jar**
-7. Trigger next with predefined **BuildId=${BUILD_NUMBER}**
+7. Post build, publish Junit result, files: target/surefire-reports/**. Can be found by looking in 'workspace' on jenkins
+8. (Trigger next with predefined **BuildId=${BUILD_NUMBER}**)
 
 #### Publish job
 1. Create new **Freestyle** job in Jenkins, name it **publish_backend** or similiar
