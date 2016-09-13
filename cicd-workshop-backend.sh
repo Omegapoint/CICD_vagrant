@@ -1,7 +1,7 @@
 #!/bin/bash
 JARFile="cicd-workshop-backend-*.jar"
 WORK_DIR="/opt/cicd-workshop-backend/"
-PIDFile="app.pid"
+PIDFile="/opt/cicd-workshop-backend/app.pid"
 PID="-1"
 NOPID="-1"
 
