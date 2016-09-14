@@ -12,12 +12,24 @@
 
 ```$ git clone https://github.com/Omegapoint/cicd-workshop.git```
 
-6. Installera python 2.6 eller 2.7 och pip.
+6. Installera python 2.6 eller 2.7 och pip. 
+	- Om man har python3 installerat kan man få problem med att vissa paket som finns i pip inte existerar i pip3.
 7. Installera ansible
    ```sudo pip install ansible```
 
 8. Kör ```vagrant up``` i den klonade projektkatalogen.
  - Om den definierade timeouttiden inte räcker till så kan utökas genom att lägga till config.vm.boot_timeout = 3000 (efter config.vm.box) i Vagrantfile. På Windows är det sannolikt är det dock inte ett timeoutproblem utan att Windows ibland har svårt att hantera virtuella 64-bitars system. Byt i så fall till config.vm.box = "ubuntu/trusty32" istf config.vm.box = "ubuntu/trusty64".
+ - Om du fått: *[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and 
+make sure become_method is 'sudo' (default).
+This feature will be removed in a 
+future release. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+ERROR! Unexpected Exception: name 'urllib2' is not defined
+to see the full traceback, use -vvv
+Ansible failed to complete successfully. Any error output should be
+visible above. Please fix these errors and try again.* så kan det bero på att du har python3 installerat och att den används istället för 2.6/2.7
+
+
 
 9. Vänta (kan ta upp emot 45 min)
 
