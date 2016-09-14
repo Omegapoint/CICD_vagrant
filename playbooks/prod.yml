@@ -17,10 +17,6 @@
           - unzip
           - rpm
 
-        - name: change owner apache2
-          sudo_user: vagrant
-          command: bash -lc "sudo chown jenkins:jenkins /var/www/html"
-
         - name: add jenkins user
           user: name=jenkins
 
@@ -36,6 +32,10 @@
 
         - name: set authorized keys
           authorized_key: user=jenkins key="{{publickey.stdout}}" manage_dir=yes
+
+        - name: change owner apache2
+          sudo_user: vagrant
+          command: bash -lc "sudo chown -R jenkins:jenkins /var/www/html"
 
         - name: Create application folder /opt/cicd-workshop-backend
           file:
