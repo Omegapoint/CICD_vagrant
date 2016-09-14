@@ -10,7 +10,7 @@
 4. Installera paketet och starta om datorn
 5. Klona git-repot med vagrantkonfiguration och provisioneringsskript i lämplig katalog:
 
-```$ git clone https://github.com/Omegapoint/CICD_vagrant.git```
+```$ git clone https://github.com/Omegapoint/cicd-workshop.git```
 
 6. Installera python 2.6 eller 2.7 och pip.
 7. Installera ansible
