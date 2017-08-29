@@ -1,7 +1,8 @@
 FROM jenkins/jenkins:lts
 
+ARG docker_gid
 USER root
-RUN groupadd docker --gid=125
+RUN groupadd docker --gid=$docker_gid
 COPY docker-engine.key /tmp/docker-engine.key
 RUN mkdir /var/log/jenkins
 RUN mkdir /var/cache/jenkins

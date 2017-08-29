@@ -1,36 +1,21 @@
 # Instructions:
 #
-# 1.
-# docker-compose up (first note the TODO below)
+#
+# 1. 
+# Build the jenkinsserver image using the build-arg docker_gid, example:
+# docker-compose build --build-arg docker_gid=$(getent group docker | cut -d: -f3) jenkinsserver
+#
+# 2.
+# Run the jenkinsserver image:
+# docker-compose up
 #
 # 2.
 # Follow the instructions in http://localhost/
 # to set up jenkins
 #
 # 3.
-# Create a new Pipeline-job and insert some docker code, for example:
-# pipeline {
-#    agent none
-#    stages {
-#        stage('Back-end') {
-#            agent {
-#                docker { image 'maven:3-alpine' }
-#            }
-#            steps {
-#                sh 'mvn --version'
-#            }
-#        }
-#        stage('Front-end') {
-#            agent {
-#                docker { image 'node:7-alpine' }
-#            }
-#            steps {
-#                sh 'node --version'
-#            }
-#        }
-#    }
-#}
-# (this code is included in the Jenkinsfile in this directory)
+# Create a new Pipeline-job and insert some docker code, as an example,
+# use the Jenkinsfile in this directory
 #
 #
 version: '3.2'
@@ -42,14 +27,6 @@ services:
       - "80:8080"
 #    restart: always
     volumes:
-
-# TODO: The jenkins container run as the jenkins user.
-# The jenkins user is added to the group docker, but you
-# currently have to make sure the docker gid in your host
-# system matches the one in ./jenkinsserver/Dockerfile:4
-# since the file /var/run/docker.sock is mounted into the
-# container
-
       - /var/run/docker.sock:/var/run/docker.sock
       - type: volume
         source: jenkinsdata
