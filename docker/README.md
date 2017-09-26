@@ -10,10 +10,9 @@ containers are restarted/recreated.
 
 ## Create images
 
-Build the images (using the build-arg docker_gid), example:
+Build the images, example:
 
-    $ docker-compose build --build-arg docker_gid=$(getent group docker | cut -d: -f3) jenkinsserver    
-    $ docker-compose build gitserver
+    $ docker-compose build    
     
 Run the images:
 
@@ -28,3 +27,5 @@ Clone repository:
     $ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-backend.git
     
     
+For backup purposes, mount the docker_jenkinsdata volume:
+docker run --rm -it --mount source=docker_jenkinsdata,target=/var/jenkins_home ubuntu bash
