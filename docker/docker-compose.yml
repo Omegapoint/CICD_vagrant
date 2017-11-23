@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - type: volume
-        source: jenkinsdata
+        source: docker_jenkinsdata
         target: /var/jenkins_home
         volume:
           nocopy: true
@@ -24,18 +24,18 @@ services:
       - "2222:22"
     volumes:
       - type: volume
-        source: gitdata
+        source: docker_gitdata
         target: /git-server/repos
         volume:
           nocopy: true
       - type: volume
-        source: keys
+        source: docker_keys
         target: /git-server/keys
         volume:
           nocopy: true
 
 volumes:
-  jenkinsdata:
-  gitdata:
-  keys:
+  docker_jenkinsdata:
+  docker_gitdata:
+  docker_keys:
 
