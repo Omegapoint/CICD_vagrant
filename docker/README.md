@@ -17,7 +17,7 @@ simple build agents, and a plain Git server.
 $ docker-compose up -d
 ```
 
-To access the Jenkins instance, open a browser and go to http://localhost:8081/
+To access the Jenkins instance, open a browser and go to http://localhost:80/
 
 The default login credentials are jenkins:jenkins.
 

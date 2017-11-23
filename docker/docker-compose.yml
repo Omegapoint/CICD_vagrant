@@ -10,7 +10,7 @@ services:
             - git-server-keys:/git-server/keys
             - ~/Workspace:/projects:ro
         ports:
-            - "8081:8080"
+            - "80:8080"
     git-server:
         image: jkarlos/git-server-docker
         depends_on:
@@ -23,19 +23,19 @@ services:
     jenkins-agent01:
         image: jenkinsci/jnlp-slave:latest
         environment:
-          - JENKINS_URL=http://jenkins-master:8081
+          - JENKINS_URL=http://jenkins-master:80
           - JENKINS_AGENT_NAME=agent01
           - JENKINS_SECRET=81b20ff39816988fd770b7c22377e51c1cf7a3ad5f2ce86d3a48310638e06370
     jenkins-agent02:
         image: jenkinsci/jnlp-slave:latest
         environment:
-          - JENKINS_URL=http://jenkins-master:8081
+          - JENKINS_URL=http://jenkins-master:80
           - JENKINS_AGENT_NAME=agent02
           - JENKINS_SECRET=84d4cca30a5b261f545826e2d56aaebd688d1f2f3e0b390bcca3d424b69aa899
     jenkins-agent03:
         image: jenkinsci/jnlp-slave:latest
         environment:
-          - JENKINS_URL=http://jenkins-master:8081
+          - JENKINS_URL=http://jenkins-master:80
           - JENKINS_AGENT_NAME=agent03
           - JENKINS_SECRET=ffaef561f9e83b0404c0916240f6190c3dddd99c3c8d2bdcce3bc98291e06da0
 
