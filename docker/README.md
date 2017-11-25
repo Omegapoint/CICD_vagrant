@@ -25,7 +25,7 @@ To access the Jenkins instance, open a browser and go to:
 
 The default login credentials are:
  
-    jenkins:jenkins.
+    jenkins:jenkins
 
 ### Add you public key to the Git server
 
@@ -44,7 +44,7 @@ $ docker cp ~/.ssh/id_rsa.pub docker_git-server_1:/git-server/keys
 # Then restart the container
 $ docker-compose restart git-server
 # And finally verify that you have access
-$ ssh git@0.0.0.0 -p 2222
+$ ssh git@localhost -p 2222
 Welcome to Alpine!
 
 The Alpine Wiki contains a large amount of how-to guides and general
@@ -58,15 +58,7 @@ You may change this message by editing /etc/motd.
 Welcome to git-server-docker!
 You've successfully authenticated, but I do not
 provide interactive shell access.
-Connection to 0.0.0.0 closed.
-```
-
-### Clone the project
-
-You can clone the cicd-workshop-backend project from the Git server:
-
-```bash
-$ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-backend.git
+Connection to localhost closed.
 ```
 
 [1]: https://docs.docker.com/engine/installation/
