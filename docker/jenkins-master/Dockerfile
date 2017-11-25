@@ -18,6 +18,13 @@ RUN apt-get update \
       && rm -rf /var/lib/apt/lists/*
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
+# Make docker wrapper around sudo docker, so that the jenkins-master container can run as 'jenkins' and run Docker along with Docker
+RUN mkdir /usr/docker-bin
+RUN echo '#!/bin/sh' >> /usr/docker-bin/docker
+RUN echo 'sudo docker "$@"' >> /usr/docker-bin/docker
+RUN chmod a+rx /usr/docker-bin/docker
+ENV PATH /usr/docker-bin:$PATH
+
 # Install Docker Engine (socket must be mounted from host machine)
 RUN apt-get update \
       && apt-get install -y \
@@ -62,5 +69,5 @@ RUN mkdir -p /git-server/keys && cp /usr/share/jenkins/ref/.ssh/id_rsa.pub /git-
 USER jenkins
 
 # Set defaults
-ENV JAVA_OPTS="-Xmx8192m -Djenkins.install.runSetupWizard=false"
+ENV JAVA_OPTS="-Xmx8192m -Duser.timezone=Europe/Stockholm -Djenkins.install.runSetupWizard=false"
 ENV JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war"
