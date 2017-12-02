@@ -12,7 +12,7 @@ services:
         ports:
             - "80:8080"
     git-server:
-        image: jkarlos/git-server-docker
+        build: git-server
         depends_on:
             - jenkins-master
         ports:

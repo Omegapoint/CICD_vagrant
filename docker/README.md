@@ -36,14 +36,16 @@ have an RSA keypair you need to generate one before doing this:
 $ ssh-keygen -t rsa
 ```
 
-To add your public key to the Git server:
+To add your public key to the Git server, copy it into the container and restart it:
 
 ```bash
-# First copy the key into the Git server container
 $ docker cp ~/.ssh/id_rsa.pub docker_git-server_1:/git-server/keys
-# Then restart the container
 $ docker-compose restart git-server
-# And finally verify that you have access
+```
+
+To verify that you have access you should be able to run the following command and see the same output:
+
+```bash
 $ ssh git@localhost -p 2222
 Welcome to Alpine!
 
@@ -59,6 +61,14 @@ Welcome to git-server-docker!
 You've successfully authenticated, but I do not
 provide interactive shell access.
 Connection to localhost closed.
+```
+
+#### Clone the cicd-workshop-backend project
+
+You can now clone the project that you will be working in for this workshop:
+
+```bash
+$ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-backend
 ```
 
 [1]: https://docs.docker.com/engine/installation/
