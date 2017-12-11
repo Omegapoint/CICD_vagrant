@@ -10,6 +10,8 @@ simple build agents, and a plain Git server.
 
 * [Docker CE][1]
 * [docker-compose][2]
+* [Java][3]
+* [Maven][4] 
 
 ### Start Jenkins and Git server
 
