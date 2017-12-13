@@ -8,21 +8,16 @@ Create a Jenkins pipeline that will trigger when changes are pushed to the examp
 
 The traditional way of configuring a CI server or most infrastructure has been to configure it manually, either through a graphical user interface or through
   the command line. There are a lot disadvantages with this way of working and we will define our pipelines as code and not through the Jenkins' GUI.
-
-### 2. Access the git repository from Jenkins
-
-To be able to access the git repository you need the key you used when setting up the git repository. The key can be stored
- securely in Jenkins' credentials store. Your pipeline can then use the credentials store to get access to pull from the 
- repository.
- 
-To add a key to the credentials store, click on `Credentials` in Jenkins main menu and add your key under `global`.  
    
 ### 2. Create a hello world pipeline
 
 The first step is to create a hello world pipeline that will just print hello world and be done. In the Jenkins' GUI, click `New Item`, give your pipeline a name
  and select `Multibranch Pipeline` as the type. 
 
-Click `add source -> git`. Select the git credentials you just added and enter the url to the git server in `Project Repository` field. 
+For Jenkins to be able to access the git-server it needs a key. That key is already provided as a credential in Jenkins'
+ credentials store with the id `jenkins-ssh`.
+
+Click `add source -> git`. Select the git credentials and enter the url to the git server in `Project Repository` field. 
  
 Jenkins can access the git repository using the hostname `git-server`.
  

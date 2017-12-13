@@ -4,7 +4,7 @@
 
 1. Familiarize yourself with the example application that is going to be used throughout the workshop.
 2. Build and run the application as a fat jar.
-3. Containerize the application as a docker container and run the application as a docker container.
+3. Build and run the application as a docker container.
 
 ### 1. Clone the Example Application
 
