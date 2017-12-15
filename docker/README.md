@@ -63,11 +63,12 @@ provide interactive shell access.
 Connection to localhost closed.
 ```
 
-#### Clone the cicd-workshop-backend project
+#### Clone the workshop projects from the Git server
 
-You can now clone the project that you will be working in for this workshop:
+You can now clone the projects that you will be working on for this workshop:
 
 ```bash
+$ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-frontend
 $ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-backend
 ```
 
