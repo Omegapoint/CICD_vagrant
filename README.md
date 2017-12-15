@@ -1,6 +1,6 @@
-#CI/CD - Skapa din egen byggpipeline
+# CI/CD - Skapa din egen byggpipeline
 
-##Förberedelser
+## Förberedelser
 
 1. Installera git och ssh
  - Windows: https://msysgit.github.io/ Välj förvalda alternativ
@@ -36,37 +36,37 @@ visible above. Please fix these errors and try again.* så kan det bero på att 
 Ibland kan ett enskilt steg i provisionering fallera pga exv att en nedladdning timear ut. I så fall kan man köra om provisioneringen med ```vagrant reload --provision <maskinnamn>````. Delar av provisionering som har lyckats kommer då inte att köras om.
 
 
-##Förutsättningar
+## Förutsättningar
 
 Det finns tre virtuella maskiner i labben. Den första, ci/cd-maskinen, innehåller Jenkins, Sonar och de två git-repona med labbens testapplikationer. Vidare finns två maskiner, test och prod, som simulerar en test- respektive produktionsmiljö.
 
 Man kan nå maskinerna m.h.a. ```vagrant ssh <maskinens vagrantnamn>```
 
-###CI/CD-maskin
+### CI/CD-maskin
 
-####Allmänt:
+#### Allmänt:
  - OS: Ubuntu 14.04.1 LTS (Trusty Tahr)
  - IP: 192.168.33.10
  - Vagrantnamn: ci
  - Minne: 2 GB
  - Java: Oracle JDK 8
 
-####Jenkins:
+#### Jenkins:
 http://192.168.33.10:8080
 
-####Nexus:
+#### Nexus:
 http://192.168.33.10:8081/nexus
 
 user: admin
 password: admin123
 
-####Sonar:
+#### Sonar:
 http://192.168.33.10:9000
 
 user: admin
 password: admin
 
-####Git:
+#### Git:
 
 För att kunna arbeta mot de två git-repon som finns på behövs en uppsättning SSH-nycklar. Börja med att se efter om du redan har en publik nyckel:
 
@@ -88,9 +88,9 @@ De två applikationerna kan sedan klonas som vanligt:
 
 ```$ git clone git@192.168.33.10:cicd-workshop-frontend.git```
 
-###TEST-maskin
+### TEST-maskin
 
-####Allmänt:
+#### Allmänt:
  - OS: Ubuntu 14.04.1 LTS (Trusty Tahr)
  - IP: 192.168.33.20
  - Vagrantnamn: test
@@ -99,9 +99,9 @@ De två applikationerna kan sedan klonas som vanligt:
  - Apache webserver
  - Jetty 8 (/usr/share/jetty8)
 
-###PROD-maskin
+### PROD-maskin
 
-####Allmänt:
+#### Allmänt:
  - OS: Ubuntu 14.04.1 LTS (Trusty Tahr)
  - IP: 192.168.33.30
  - Vagrantnamn: prod
@@ -110,7 +110,7 @@ De två applikationerna kan sedan klonas som vanligt:
  - Apache webserver
  - Jetty 8 (/usr/share/jetty8)
 
-###Backendapplikationen
+### Backendapplikationen
 
 Backendapplikationen är skriven i Java, använder sig utav Spring boot och har ett par enhetstester.
 
@@ -136,7 +136,7 @@ På test- och prodmaskinerna finns det ett init.d skript som kan starta och stop
 
 På windowsmaskiner kan man behöva ändra ```ps -p``` till ```ps p``` i application.sh-skriptet för att få det att fungera.
 
-###Frontendapplikationen
+### Frontendapplikationen
 
 Frontendapplikationen är byggd m.h.a. AngularJs och innehåller även ett par enhetstester. På både test- och prodmaskinen finns det en Apache webserver som kan användas när frontendapplikationen ska deployas.
 
@@ -173,19 +173,19 @@ Gitrepo: git@192.168.33.10:cicd-workshop-frontend.git
 
 ```{ "REST_ENDPOINT": "http://192.168.33.30:8080" }```
 
-##Målbild
+## Målbild
 
 Målet med labben är att sätta upp två fungerande byggpipelines: för backend- respektive frontendapplikationen som finns i ci-maskinens två gitrepon. Byggpipelinerna ska bygga, testa och deploya applikationen till test-miljön automatiskt och ett bygge ska triggas på push till applikationens gitrepo. Byggpipelinerna görs lämpligtvis som en serie kedjade Jenkinsjobb och kan visualiseras m.h.a. Jenkins Build Pipeline-plugin. Ett sista manuellt triggat steg ska kunna deploya ett bygge till produktionsmiljön. Om en push till gitrepot innehåller enhetstester som inte är gröna ska bygget fallera.
 
-##Labbinstruktioner
+## Labbinstruktioner
 
-###Del 1 - Konfigurera jenkinsjobb
+### Del 1 - Konfigurera jenkinsjobb
 Efter att vagrant satt up boxarna så körs en jenkinsserver på ci-boxen, den kommer du åt via http://192.168.33.10:8080
 Det första du behöver göra är att konfigurera två jobb, ett för frontend applikationen och ett för backend applikationen.
 Jobben ska inledningsvis checka ut koden från git, köra enhetstester och sedan bygga applikationen.
 Backendjobbet ska konfigureras som ett maven projekt, medan frontend applikationen ska konfigureras som ett free-style projekt.
 
-###Del 2 - Konfigurera git och jenkins
+### Del 2 - Konfigurera git och jenkins
 Börja med att följa instruktionerna angående git och git-projekten. Det finns två metoder, den enklaste är att man låter Jenkins polla git-repot efter ändringar och den lite mer komplicerade men snyggare är att konfigurera git så att en incheckning notifierar jenkins att köra ett bygge. För att få git-repot att notifiera Jenkins kan man lägga till en git-hook, som triggas om något har förändrats efter en push till origin. 
 Utför följande steg:
 
@@ -197,13 +197,13 @@ curl http://192.168.33.10:8080/git/notifyCommit?url=git@192.168.33.10:<reponamn>
 ```
 Sätt ägare på filen och gör den exekverbar genom: ```sudo chown git:git post-receive```, ```sudo chmod +x post-receive``` Verifiera att push-tekniken fungerar genom att i host-miljön checka ut applikationerna, gör en förändring i någon fil och pusha förändringarna till git servern. Då ska ett nytt bygge exekveras på jenkinsservern.
 
-###Del 3 - Testautomatisering
+### Del 3 - Testautomatisering
 Nu när du har applikationerna utcheckade och två jobb konfigurerade som exekverar byggen på push till git så ska du lägga till eller modifera tester i applikationerna. I javaapplikationen skrivs tester med junit och spring framework. I frontend applikationen skrivs tester med jasmine. Skriv ett test som fallerar och checka in koden, du ska sedan se i jenkins att bygget markeras som fallerat. Ändra i testklassen så att alla tester går igenom, pusha koden och verifiera i jenkins.
 
-###Del 4 - Continuous delivery
+### Del 4 - Continuous delivery
 I denna del ska du skapa deployjobb som automatiskt installerar applikationerna i test och prodmiljö. 
 
-####Frontendapplikationen
+#### Frontendapplikationen
 
 Vi kommer används rpm och programmet fpm för att skapa rpm:er.
 Utför följande steg:
@@ -221,7 +221,7 @@ cd /home/jenkins
 rpm -ivh "mc-angular-1.0."${Param}"-1.x86_64.rpm"
 ```
 
-####Backendapplikationen
+#### Backendapplikationen
 Det enklaste sättet är att deploya applikationen är som följer:
 
 1. Skapa ett nytt deployjobb som kopierar artifakter från det jobb som du först skapade för att bygga och testa applikationen.
@@ -235,7 +235,7 @@ Det enklaste sättet är att deploya applikationen är som följer:
 
 På test- och prodmaskinerna finns det ett init.d-skript ```/etc/init.d/cicd-workshop-backend``` som kan starta och stoppa applikationen. Skriptet förutsätter att applikationens jar:er placeras i ```/opt/cicd-workshop-backend```.
 
-##Stretch goals
+## Stretch goals
 
 ### Hantera artifakter m.h.a. Nexus
 
