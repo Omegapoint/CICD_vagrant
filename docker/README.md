@@ -38,7 +38,7 @@ have an RSA keypair you need to generate one before doing this:
 $ ssh-keygen -t rsa
 ```
 
-To add your public key to the Git server, copy it into the container and restart it:
+To add your public key to the Git server, copy it into the `git` users authorized keys file:
 
 ```bash
 $ docker-compose exec git-server sh -c "echo '$(cat ~/.ssh/id_rsa.pub)' >> /etc/authorized_keys/git"
@@ -56,11 +56,10 @@ Connection to localhost closed.
 
 #### Clone the workshop projects from the Git server
 
-You can now clone the projects that you will be working on for this workshop:
+You can now clone the project that you will be working on for this workshop:
 
 ```bash
-$ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-frontend
-$ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-backend
+$ git clone ssh://git@localhost:2222/repos/cicd-workshop-backend
 ```
 
 ### Add your public key to the prod and test servers
@@ -74,7 +73,7 @@ $ docker-compose exec test-server sh -c "echo '$(cat ~/.ssh/id_rsa.pub)' >> /et
 
 (Note that you only have to do it for either `test-server` or `prod-server` as they both share the same folder for authorized keys.)
 
-TO verify that you have access and can run docker on the prod and test server, you should be able to do the following:
+To verify that you have access and can run Docker on the prod and test server, you should be able to do the following:
 
 ```bash
 $ ssh docker@localhost -p 2223
