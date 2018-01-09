@@ -1,4 +1,4 @@
-FROM jenkinsci/jenkins:latest
+FROM jenkinsci/jenkins:2.89.2
 
 #
 # ROOT
