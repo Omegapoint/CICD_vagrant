@@ -7,8 +7,7 @@ services:
             - jenkins-home:/var/jenkins_home
             - jenkins-log:/var/log/jenkins
             - /var/run/docker.sock:/var/run/docker.sock
-            - git-server-keys:/git-server/keys
-            - ~/Workspace:/projects:ro
+            - authorized-keys:/keys
         ports:
             - "80:8080"
     git-server:
@@ -18,10 +17,33 @@ services:
         ports:
             - "2222:22"
         volumes:
-            - git-server-keys:/git-server/keys
-            - git-server-repos:/git-server/repos
+            - authorized-keys:/etc/authorized_keys
+            - git-repos:/repos
+        environment:
+          - MOTD=Welcome to the CI/CD workshop Git server!
+          - SSH_USERS=git:1000:1000
+    test-server:
+        build: docker-server
+        ports:
+            - "2223:22"
+        volumes:
+            - authorized-keys:/etc/authorized_keys
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+          - MOTD=Welcome to the CI/CD workshop test server!
+          - SSH_USERS=docker:1000:1000
+    prod-server:
+        build: docker-server
+        ports:
+            - "2224:22"
+        volumes:
+            - authorized-keys:/etc/authorized_keys
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+          - MOTD=Welcome to the CI/CD workshop prod server!
+          - SSH_USERS=docker:1000:1000
 volumes:
   jenkins-home:
   jenkins-log:
-  git-server-keys:
-  git-server-repos:
+  authorized-keys:
+  git-repos:

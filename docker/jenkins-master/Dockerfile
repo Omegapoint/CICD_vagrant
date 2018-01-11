@@ -65,7 +65,7 @@ USER jenkins
 
 # Add public key to Git server
 USER root
-RUN mkdir -p /git-server/keys && cp /usr/share/jenkins/ref/.ssh/id_rsa.pub /git-server/keys/jenkins.pub
+RUN mkdir -p /keys && cat /usr/share/jenkins/ref/.ssh/id_rsa.pub >> /keys/git
 USER jenkins
 
 # Set defaults
