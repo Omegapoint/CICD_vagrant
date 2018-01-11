@@ -11,7 +11,7 @@
 Clone the example application repository from the git-server that you just set up during the preparations.
 
 ```bash
-$ git clone ssh://git@localhost:2222/git-server/repos/cicd-workshop-backend
+$ git clone ssh://git@localhost:2222/repos/cicd-workshop-backend
 ```
 ### 2. Open the Example Application In Your IDE
 
