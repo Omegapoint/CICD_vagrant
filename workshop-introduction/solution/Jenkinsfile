@@ -1,0 +1,47 @@
+node() {
+
+    checkout([
+            $class                           : "GitSCM",
+            branches                         : [[name: "*/$BRANCH_NAME"]],
+            doGenerateSubmoduleConfigurations: false,
+            extensions                       : [],
+            submoduleCfg                     : [],
+            userRemoteConfigs                : [[
+                                                        credentialsId: "git-credentials",
+                                                        url          : "ssh://git@git-server:22/repos/cicd-workshop-backend"
+                                                ]]
+    ])
+
+    def image
+
+    if ("$BRANCH_NAME" == "master") {
+        stage("run tests") {
+            docker.image('maven:3.3.3-jdk-8').inside {
+                sh 'mvn clean test'
+            }
+        }
+        stage("build image") {
+            docker.image('maven:3.3.3-jdk-8').inside {
+                sh 'mvn clean package'
+
+            }
+            image = docker.build("example_app")
+        }
+        stage("deploy to staging") {
+            sh "ssh -t docker@test-server sudo docker run -p 9000:8080 -d --name test_env --rm --network docker_default example_app"
+        }
+        stage("verify the staging environment") {
+            sh "sleep 20"
+            sh "curl http://test_env:9000"
+        }
+        stage("deploy to production") {
+            sh "ssh -t docker@prod-server sudo docker run -p 9001:8080 -d --name test_env --rm --network docker_default example_app"
+        }
+    } else {
+        stage("run tests") {
+            docker.image('maven:3.3.3-jdk-8').inside {
+                sh 'mvn clean test'
+            }
+        }
+    }
+}
