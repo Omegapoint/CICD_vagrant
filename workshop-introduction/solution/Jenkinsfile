@@ -35,7 +35,7 @@ node() {
             sh "curl http://test_env:9000"
         }
         stage("deploy to production") {
-            sh "ssh -t docker@prod-server sudo docker run -p 9001:8080 -d --name test_env --rm --network docker_default example_app"
+            sh "ssh -t docker@prod-server sudo docker run -p 9001:8080 -d --name prod_env --rm --network docker_default example_app"
         }
     } else {
         stage("run tests") {
