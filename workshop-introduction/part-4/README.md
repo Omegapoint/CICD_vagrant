@@ -58,6 +58,8 @@ the detached, and the name option. The publish port option will enable you to as
  between the test environment example app and the production environment example app. Finally, the detached option will
  run the docker container in the background.
 
+You'll have to add Jenkins' key to the docker user for Jenkins to be able to access the test and production server. That can be done in the same manner as for the other keys, see the first part with the docker setup for more information.
+
 Verify that you can reach the deployed example application on the assigned port.
 
 ### 4. Test and deploy to production
