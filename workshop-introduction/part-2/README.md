@@ -19,8 +19,8 @@ For Jenkins to be able to access the git-server it needs a key. That key is alre
 
 Click `add source -> git`. Select the git credentials and enter the url to the git server in `Project Repository` field. 
  
-Jenkins can access the git repository using the hostname `git-server`.
- 
+Jenkins can access the git repository using the hostname `git-server` and port 22. The url for git repo from the point of view of Jenkins is apart from that the same as the one you used locally. 
+
 Please note the heading `Build Configuration` and the configuration underneath. This means that his Jenkins job will look for a 
 `Jenkinsfile` in the root of the repository of the example application and the code in the Jenkinsfile will be executed by the job.
 
