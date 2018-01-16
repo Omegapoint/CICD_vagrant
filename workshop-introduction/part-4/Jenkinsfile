@@ -17,5 +17,4 @@ node() {
             sh 'mvn clean test'
         }
     }
-x§
 }
