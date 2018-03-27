@@ -24,6 +24,8 @@ Find a suitable docker image with maven preinstalled.
 Update your pipeline to run a basic maven command in the maven docker container, e.g. 
  `mvn --version` to verify that everything works as expected.
 
+Hint: look at the Docker pipeline documentation below and especially the `image` and `inside` commands.
+
 #### 1.3 Update your pipeline to run the test suite
 
 Update the pipeline to run the test suite using maven.
