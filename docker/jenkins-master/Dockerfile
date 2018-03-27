@@ -63,9 +63,11 @@ USER root
 RUN rm /tmp/jenkins-config.tar.gz
 USER jenkins
 
-# Add public key to Git server
+# Add public key to git, test and prod server
 USER root
-RUN mkdir -p /keys && cat /usr/share/jenkins/ref/.ssh/id_rsa.pub >> /keys/git
+RUN mkdir -p /keys \
+    && cat /usr/share/jenkins/ref/.ssh/id_rsa.pub >> /keys/git \
+    && cat /usr/share/jenkins/ref/.ssh/id_rsa.pub >> /keys/docker
 USER jenkins
 
 # Set defaults
