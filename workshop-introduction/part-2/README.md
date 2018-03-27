@@ -50,7 +50,7 @@ The job should be triggered automatically when changes are pushed to the git rep
  
 To simplify things we'll poll.
 
-The easiest way to this is to configure the multibranch pipeline to poll.
+The easiest way to this is to configure the multibranch pipeline to poll, or using the language of the multibranch pipeline plugin, scan periodically if not otherwise run.
 
 Push changes to the git repository and verify that a job is triggered.
 
