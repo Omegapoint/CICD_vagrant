@@ -105,5 +105,10 @@ For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 ```
 
+## Overview
+
+![Alt text](./environment_setup.svg)
+<img src="./environment_setup.svg">
+
 [1]: https://docs.docker.com/engine/installation/
 [2]: https://docs.docker.com/compose/install/

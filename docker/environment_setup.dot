@@ -1,0 +1,32 @@
+digraph G {
+
+  label = "Docker environment setup";
+  labelloc = top;
+
+    subgraph cluster_0 {
+
+        label = "Host";
+
+        subgraph cluster_1 {
+            label = "Docker";
+            style=filled;
+            color=lightgrey;
+            node [style=filled,fillcolor=white,shape=box3d];
+            "jenkins-master" -> "git-server" [label="git-server:22", fontsize=8];
+            "jenkins-master" -> "test-server" [label="test-server:23", fontsize=8];
+            "jenkins-master" -> "prod-server" [label="prod-server:24", fontsize=8];
+        }
+
+        "ssh" -> "localhost-to-git" [label="localhost:2222", fontsize=8]
+        "localhost-to-git" -> "git-server" [label="<container IP>:22", fontsize=8]
+
+        "localhost-to-jenkins" -> "jenkins-master" [label="<container IP>:8080", fontsize=8]
+        "browser" -> "localhost-to-jenkins" [label="localhost:80", fontsize=8]
+
+        "localhost-to-git" [shape=record, label="{ 2222 | 22 }", style=rounded]
+        "localhost-to-jenkins" [shape=record, label="{ 80 | 8080 }", style=rounded]
+
+        {rank=same; "browser"; "ssh";}
+        {rank=same; "localhost-to-jenkins"; "localhost-to-git";}
+    }
+}
